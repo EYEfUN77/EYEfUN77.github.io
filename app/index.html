@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>바탕화면 달력</title>
+<meta name="theme-color" content="#16805a">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="바탕화면 달력">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+html,body{margin:0;height:100%;background:#16805a;overflow:hidden}
+iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff}
+#ld{position:fixed;inset:0;z-index:2;background:#16805a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;font:600 16px/1.4 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;transition:opacity .3s}
+#ld img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+</style>
+</head>
+<body>
+<div id="ld"><img src="icon-192.png" alt=""><div>바탕화면 달력 불러오는 중…</div></div>
+<iframe id="cal" title="바탕화면 달력" allow="geolocation; clipboard-write; clipboard-read" src="https://script.google.com/macros/s/AKfycbwWQywc263qUTpraUo1FIfcllv1g02fnXgieYk25hT7kMHioN7Pc_HSfN2z9GQocKUN4Q/exec"></iframe>
+<script>
+document.getElementById('cal').addEventListener('load',function(){var l=document.getElementById('ld');l.style.opacity=0;setTimeout(function(){l.remove()},400);});
+if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
+</script>
+</body>
+</html>
