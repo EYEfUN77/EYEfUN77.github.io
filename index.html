@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>바탕화면 달력 (Desktop Calendar)</title>
+<meta name="description" content="구글 캘린더와 연동되어 Windows 바탕화면에 항상 떠 있는 달력 앱. A Windows desktop calendar that syncs with your Google Calendar.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="icon.png" alt="">바탕화면 달력</a>
+  <nav><a href="#features">기능</a><a href="#google-data">구글 데이터 사용</a><a href="privacy.html">개인정보처리방침</a><a href="#english">English</a></nav>
+</div></header>
+
+<main>
+<div class="wrap hero">
+  <h1>내 구글 캘린더를<br>바탕화면에 그대로</h1>
+  <p class="lead">바탕화면 달력은 내 구글 캘린더 일정을 Windows 바탕화면에 항상 보여 주는 달력 앱입니다. 다른 프로그램 창을 가리지 않고 바탕화면에 붙어 있으며, 일정을 보고 바로 추가·수정할 수 있습니다.</p>
+  <div class="badges"><span class="badge">Windows 10 / 11</span><span class="badge">구글 캘린더 · 구글 할 일 연동</span><span class="badge">무료</span></div>
+  <img class="shot" src="screenshot.png" alt="바탕화면 달력 화면: 월간 달력과 오늘·다가오는 일정 목록">
+</div>
+
+<section id="features"><div class="wrap">
+  <h2>주요 기능</h2>
+  <div class="grid">
+    <div class="card"><h3>바탕화면에 고정</h3><p>항상 다른 창 아래에 있어 작업을 방해하지 않고, Win+D로 바탕화면을 볼 때도 그대로 보입니다.</p></div>
+    <div class="card"><h3>구글 캘린더 양방향 동기화</h3><p>구글 캘린더의 일정을 보여 주고, 앱에서 추가·수정·삭제한 일정이 휴대폰 구글 캘린더에도 바로 반영됩니다.</p></div>
+    <div class="card"><h3>반복 일정·기간 지정</h3><p>매주·매달 말일 등 반복 일정을 만들고, 반복 기간과 범위(이 일정만 / 이후 모두 / 전체)를 정할 수 있습니다.</p></div>
+    <div class="card"><h3>분류·색·강조</h3><p>업무·개인 등 분류별 약칭과 색을 정하고, 중요한 일정은 반짝이게 강조합니다.</p></div>
+    <div class="card"><h3>공유 캘린더</h3><p>가족·동료와 함께 쓸 캘린더를 만들고 구글 계정 이메일로 초대할 수 있습니다.</p></div>
+    <div class="card"><h3>구글 할 일·음력·공휴일</h3><p>구글 할 일 목록, 음력 날짜, 한국 공휴일과 대체공휴일, 날씨를 함께 보여 줍니다.</p></div>
+  </div>
+</div></section>
+
+<section id="google-data"><div class="wrap">
+  <h2>구글 계정에서 사용하는 정보</h2>
+  <p>바탕화면 달력은 사용자가 구글 계정으로 로그인하고 권한을 허용한 경우에만 아래 정보에 접근합니다. 앱은 구글 서버와 직접 통신하며, <b>개발자의 서버로 사용자의 구글 데이터를 보내거나 저장하지 않습니다.</b></p>
+  <table>
+    <tr><th style="width:34%">권한</th><th>사용하는 곳</th></tr>
+    <tr><td>이메일 주소 (<code>openid</code>, <code>email</code>)</td><td>로그인한 계정을 화면에 표시하고 구분합니다.</td></tr>
+    <tr><td>구글 캘린더 (<code>…/auth/calendar</code>)</td><td>캘린더 목록과 일정을 달력에 표시하고, 사용자가 요청할 때 일정 추가·수정·삭제, 반복 일정 변경, 공유 캘린더 만들기와 멤버 초대를 합니다.</td></tr>
+    <tr><td>구글 할 일 (<code>…/auth/tasks</code>)</td><td>할 일 목록을 달력에 표시하고, 사용자가 요청할 때 할 일을 추가·완료·삭제합니다.</td></tr>
+    <tr><td>구글 드라이브 – 앱이 만든 파일만 (<code>…/auth/drive.file</code>)</td><td>사용자가 일정에 첨부한 사진을 사용자의 드라이브 "바탕화면 달력 첨부사진" 폴더에 저장하고 보여 줍니다. 앱이 만들지 않은 드라이브 파일에는 접근하지 않습니다.</td></tr>
+    <tr><td>구글 드라이브 – 앱 설정 공간 (<code>…/auth/drive.appdata</code>)</td><td>분류·색, 학기 주차, 스티커 등 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
+  </table>
+  <div class="note">바탕화면 달력이 구글 API에서 받은 정보를 사용하고 다른 앱으로 전송하는 방식은 <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API 서비스 사용자 데이터 정책</a>의 제한적 사용(Limited Use) 요구 사항을 따릅니다.</div>
+  <p>자세한 내용은 <a href="privacy.html">개인정보처리방침</a>을 확인하세요.</p>
+</div></section>
+
+<section id="english"><div class="wrap">
+  <h2><span class="lang">EN</span>Desktop Calendar</h2>
+  <p><b>Desktop Calendar</b> (Korean name: 바탕화면 달력) is a Windows desktop app that shows your Google Calendar on the desktop, always behind other windows, so you can see and edit your schedule at a glance.</p>
+  <ul>
+    <li><b>Google Calendar</b> (<code>calendar</code>): display your calendars and events; create, edit and delete events, change recurring events, create a shared calendar and invite members — only when you request it.</li>
+    <li><b>Google Tasks</b> (<code>tasks</code>): show your tasks on the calendar and add, complete or delete tasks when you request it.</li>
+    <li><b>Google Drive – files created by the app</b> (<code>drive.file</code>): store photos you attach to events in a "바탕화면 달력 첨부사진" folder in your Drive.</li>
+    <li><b>Google Drive – app data folder</b> (<code>drive.appdata</code>): keep your app settings (categories, colors, semester weeks) in the hidden app folder so they follow you to other PCs.</li>
+    <li><b>Email</b> (<code>openid</code>, <code>email</code>): show which account is signed in.</li>
+  </ul>
+  <p>The app talks directly to Google APIs from your PC. Your Google user data is never sent to or stored on the developer's servers, never sold, and never used for advertising or AI model training.</p>
+  <div class="note">Desktop Calendar's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements.</div>
+  <p>Read the full <a href="privacy.html#en">Privacy Policy</a>.</p>
+</div></section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 김형수 (Kim Hyeong-su)</span>
+  <a href="privacy.html">개인정보처리방침 / Privacy Policy</a>
+  <span>문의 / Contact: <a href="mailto:sinmasuri@gmail.com">sinmasuri@gmail.com</a></span>
+</div></footer>
+</body>
+</html>

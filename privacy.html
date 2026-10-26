@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>개인정보처리방침 – 바탕화면 달력</title>
+<meta name="description" content="바탕화면 달력(Desktop Calendar) 개인정보처리방침 / Privacy Policy">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="./"><img src="icon.png" alt="">바탕화면 달력</a>
+  <nav><a href="./">홈</a><a href="#ko">한국어</a><a href="#en">English</a></nav>
+</div></header>
+
+<main class="wrap doc">
+<section id="ko" style="border-top:0">
+<h1>개인정보처리방침</h1>
+<p>시행일: 2026년 10월 27일</p>
+<p>바탕화면 달력(영문명 Desktop Calendar, 이하 "앱")은 개인 개발자 김형수(이하 "개발자")가 만든 Windows용 달력 앱입니다. 이 방침은 앱이 어떤 정보를 어떻게 사용하고 보관하는지 설명합니다.</p>
+
+<div class="note"><b>요약</b> — 앱은 사용자가 허용한 구글 계정 정보(캘린더, 할 일, 앱이 만든 드라이브 파일, 앱 설정)를 <b>사용자의 PC에서 구글 서버와 직접 주고받을 뿐</b>, 개발자의 서버로 보내거나 저장하지 않습니다. 정보를 판매하거나 광고·AI 학습에 쓰지 않습니다.</div>
+
+<h2>1. 처리하는 정보와 이용 목적</h2>
+<p>사용자가 앱에서 "Google 계정으로 로그인"을 누르고 구글 동의 화면에서 권한을 허용한 경우에만 아래 정보에 접근합니다.</p>
+<table>
+<tr><th style="width:32%">정보 (구글 권한)</th><th>이용 목적</th></tr>
+<tr><td>구글 계정 이메일 주소<br><code>openid</code>, <code>email</code></td><td>로그인한 계정을 화면에 표시하고 구분합니다.</td></tr>
+<tr><td>구글 캘린더의 캘린더 목록과 일정<br><code>https://www.googleapis.com/auth/calendar</code></td><td>일정을 달력에 표시합니다. 사용자가 요청할 때만 일정을 추가·수정·삭제하고, 반복 일정의 기간·범위를 바꾸고, 새 캘린더를 만들어 사용자가 적은 이메일 주소에 공유(초대)합니다.</td></tr>
+<tr><td>구글 할 일<br><code>https://www.googleapis.com/auth/tasks</code></td><td>할 일을 달력에 표시하고, 사용자가 요청할 때 할 일을 추가·완료·삭제합니다.</td></tr>
+<tr><td>앱이 만든 구글 드라이브 파일<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>사용자가 일정에 첨부한 사진을 사용자의 드라이브 "바탕화면 달력 첨부사진" 폴더에 올리고 보여 줍니다. 앱이 만들지 않은 파일에는 접근하지 않습니다.</td></tr>
+<tr><td>구글 드라이브 앱 설정 공간<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>분류·색, 학기 주차, 스티커, 일정 틀 같은 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
+</table>
+<p>앱은 위 목적 외에 구글 사용자 데이터를 사용하지 않습니다. 사람(개발자 포함)이 사용자의 구글 데이터를 열람하지 않습니다. 다만 사용자가 오류 확인을 위해 직접 동의한 경우, 보안 사고 조사, 법령 준수에 필요한 경우는 예외입니다.</p>
+
+<h3>Google API 서비스 사용자 데이터 정책 준수</h3>
+<p>바탕화면 달력이 구글 API에서 받은 정보를 사용하고 다른 앱으로 전송하는 방식은 <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API 서비스 사용자 데이터 정책</a>의 제한적 사용(Limited Use) 요구 사항을 따릅니다. 구글 사용자 데이터는 앱 화면에 보이는 기능을 제공하는 데에만 쓰며, 광고, 판매, 신용 평가, AI·머신러닝 모델 학습에 사용하거나 제3자에게 넘기지 않습니다.</p>
+
+<h3>구글 데이터가 아닌 정보</h3>
+<ul>
+<li><b>날씨용 위치</b>: 날씨 표시를 켜 두면, Windows 위치 서비스에서 받은 대략적인 위도·경도를 날씨 서비스(Open-Meteo, open-meteo.com)에 보내 오늘 날씨를 받아 옵니다. 위치를 허용하지 않으면 울산 날씨를 보여 줍니다. 날씨 표시는 설정에서 끌 수 있습니다.</li>
+<li><b>화면 파일 내려받기</b>: 앱은 실행할 때 개발자의 구글 Apps Script 웹 앱에서 최신 달력 화면 파일을 내려받습니다. 이 요청에는 사용자의 계정이나 일정 정보가 들어가지 않습니다.</li>
+<li>앱은 사용 통계, 광고 식별자, 쿠키 추적을 수집하지 않습니다.</li>
+</ul>
+
+<h2>2. 보관 장소와 기간</h2>
+<ul>
+<li><b>구글 계정</b>: 일정, 할 일, 첨부 사진, 앱 설정은 모두 사용자의 구글 계정(캘린더, 할 일, 드라이브)에 저장되며 사용자가 지울 때까지 보관됩니다.</li>
+<li><b>사용자의 PC</b>: 로그인 상태 유지를 위한 인증 토큰은 Windows가 제공하는 암호화 기능으로 암호화해 앱 폴더(<code>%APPDATA%\DesktopCalendar</code>)에 보관합니다. 화면을 빠르게 띄우기 위한 최근 일정·설정 사본도 같은 곳에 임시로 보관합니다.</li>
+<li>앱에서 <b>로그아웃</b>하면 PC에 있던 인증 토큰과 일정·설정 사본을 지우고, 구글에도 토큰 폐기를 요청합니다.</li>
+<li>개발자는 사용자의 구글 데이터를 별도로 보관하지 않습니다.</li>
+</ul>
+
+<h2>3. 제3자 제공과 처리 위탁</h2>
+<p>개발자는 사용자의 정보를 제3자에게 제공하거나 판매하지 않으며, 처리를 위탁하지 않습니다. 사용자가 공유 캘린더에 다른 사람을 초대하면, 사용자가 적은 이메일 주소로 구글이 초대 안내를 보냅니다. 이는 사용자가 직접 요청한 기능입니다.</p>
+
+<h2>4. 사용자의 권리와 정보 삭제 방법</h2>
+<ul>
+<li><b>로그아웃</b>: 앱 메뉴 → 계정 → 로그아웃. PC에 남은 인증 토큰과 사본을 지웁니다.</li>
+<li><b>권한 철회</b>: <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">구글 계정 → 보안 → 서드 파티 앱 및 서비스</a>에서 "바탕화면 달력"의 접근 권한을 언제든지 삭제할 수 있습니다.</li>
+<li><b>앱 설정 삭제</b>: 구글 드라이브 웹 → 설정 → 앱 관리에서 "바탕화면 달력"의 숨겨진 앱 데이터를 삭제할 수 있습니다.</li>
+<li><b>첨부 사진 삭제</b>: 구글 드라이브의 "바탕화면 달력 첨부사진" 폴더에서 직접 지울 수 있습니다.</li>
+<li><b>앱 제거</b>: Windows 설정 → 앱에서 "바탕화면 달력"을 제거하세요. 남은 <code>%APPDATA%\DesktopCalendar</code> 폴더는 직접 지울 수 있습니다.</li>
+<li>개인정보 열람·정정·삭제 요청이나 문의는 아래 이메일로 보내 주세요.</li>
+</ul>
+
+<h2>5. 안전성 확보 조치</h2>
+<ul>
+<li>구글과의 모든 통신은 암호화된 연결(HTTPS)로 이루어집니다.</li>
+<li>로그인은 구글의 공식 로그인 화면(OAuth 2.0, PKCE)에서 이루어지며, 앱은 사용자의 구글 비밀번호를 받거나 저장하지 않습니다.</li>
+<li>인증 토큰은 Windows 암호화 기능으로 암호화해 사용자의 PC에만 보관합니다.</li>
+<li>앱은 기능에 필요한 최소한의 권한만 요청합니다.</li>
+</ul>
+
+<h2>6. 어린이</h2>
+<p>앱은 만 14세 미만 어린이를 대상으로 하지 않으며, 어린이의 개인정보를 알고서 수집하지 않습니다.</p>
+
+<h2>7. 개인정보 보호책임자와 문의</h2>
+<p>개인정보 보호책임자: 김형수 (개발자)<br>이메일: <a href="mailto:sinmasuri@gmail.com">sinmasuri@gmail.com</a></p>
+
+<h2>8. 방침의 변경</h2>
+<p>이 방침이 바뀌면 이 페이지에 변경 내용과 시행일을 게시합니다. 구글 사용자 데이터의 사용 방식이 바뀌는 경우에는 앱 안에서도 알리고, 필요하면 다시 동의를 받습니다.</p>
+</section>
+
+<section id="en">
+<h1><span class="lang">EN</span>Privacy Policy</h1>
+<p>Effective date: October 27, 2026</p>
+<p>Desktop Calendar (Korean name: 바탕화면 달력, the "App") is a Windows calendar app developed by an individual developer, Kim Hyeong-su (the "Developer"). This policy explains what information the App uses and how.</p>
+
+<div class="note"><b>Summary</b> — The App exchanges the Google data you authorize (calendar, tasks, Drive files the App created, app settings) <b>directly between your PC and Google's servers</b>. It is never sent to or stored on the Developer's servers, never sold, and never used for advertising or AI training.</div>
+
+<h2>1. Information we access and why</h2>
+<p>The App accesses the following only after you choose "Sign in with Google" and grant permission on Google's consent screen.</p>
+<table>
+<tr><th style="width:32%">Data (Google scope)</th><th>Purpose</th></tr>
+<tr><td>Google account email address<br><code>openid</code>, <code>email</code></td><td>Show and identify the signed-in account.</td></tr>
+<tr><td>Google Calendar calendars and events<br><code>https://www.googleapis.com/auth/calendar</code></td><td>Display your events on the desktop calendar. Only at your request: create, edit and delete events; change the period or scope of recurring events; create a new calendar and share it with email addresses you enter.</td></tr>
+<tr><td>Google Tasks<br><code>https://www.googleapis.com/auth/tasks</code></td><td>Display your tasks and, at your request, add, complete or delete tasks.</td></tr>
+<tr><td>Google Drive files created by the App<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>Upload and show photos you attach to events, stored in a "바탕화면 달력 첨부사진" folder in your Drive. The App cannot access Drive files it did not create.</td></tr>
+<tr><td>Google Drive app data folder<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>Store your app settings (categories, colors, semester weeks, stickers, templates) in the hidden app-specific folder so they are available on your other PCs.</td></tr>
+</table>
+<p>Google user data is used only for these user-facing features. No human, including the Developer, reads your Google data, except with your explicit consent for troubleshooting, for security purposes, or to comply with applicable law.</p>
+
+<h3>Limited Use disclosure</h3>
+<p>Desktop Calendar's use and transfer to any other app of information received from Google APIs will adhere to the <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API Services User Data Policy</a>, including the Limited Use requirements. Google user data is not used for advertising, is not sold, is not used to determine creditworthiness or for lending, is not used to develop, improve or train generalized AI/ML models, and is not transferred to third parties.</p>
+
+<h3>Non-Google information</h3>
+<ul>
+<li><b>Location for weather</b>: if the weather display is on, approximate latitude/longitude from Windows location services is sent to Open-Meteo (open-meteo.com) to get today's forecast. If location is not allowed, a default city (Ulsan, Korea) is used. You can turn the weather display off in settings.</li>
+<li><b>Interface file download</b>: on start, the App downloads the latest calendar interface file from the Developer's Google Apps Script web app. This request contains no account or calendar data.</li>
+<li>The App does not collect analytics, advertising IDs or tracking cookies.</li>
+</ul>
+
+<h2>2. Storage and retention</h2>
+<ul>
+<li><b>Your Google account</b>: events, tasks, attached photos and app settings are stored in your own Google account and remain until you delete them.</li>
+<li><b>Your PC</b>: the sign-in token is encrypted with the Windows encryption facility and kept in the App folder (<code>%APPDATA%\DesktopCalendar</code>), together with a temporary cache of recent events and settings for fast start-up.</li>
+<li>Signing out of the App deletes the token and the cached data from your PC and asks Google to revoke the token.</li>
+<li>The Developer does not keep any copy of your Google data.</li>
+</ul>
+
+<h2>3. Sharing</h2>
+<p>We do not share, sell or transfer your information to third parties. When you invite people to a shared calendar, Google sends an invitation to the email addresses you entered, at your request.</p>
+
+<h2>4. Your choices and deletion</h2>
+<ul>
+<li><b>Sign out</b>: App menu → Account → Sign out.</li>
+<li><b>Revoke access</b>: remove "바탕화면 달력" at <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">Google Account → Security → Third-party apps &amp; services</a>.</li>
+<li><b>Delete app settings</b>: Google Drive → Settings → Manage apps → delete hidden app data of "바탕화면 달력".</li>
+<li><b>Delete attached photos</b>: delete them in the "바탕화면 달력 첨부사진" folder in your Drive.</li>
+<li><b>Uninstall</b>: Windows Settings → Apps → "바탕화면 달력". You may delete the remaining <code>%APPDATA%\DesktopCalendar</code> folder.</li>
+</ul>
+
+<h2>5. Security</h2>
+<p>All communication with Google uses HTTPS. Sign-in happens on Google's own page (OAuth 2.0 with PKCE); the App never sees or stores your Google password. Tokens are encrypted and stored only on your PC. The App requests only the permissions its features need.</p>
+
+<h2>6. Children</h2>
+<p>The App is not directed to children under 14 and does not knowingly collect their information.</p>
+
+<h2>7. Contact</h2>
+<p>Kim Hyeong-su (Developer) — <a href="mailto:sinmasuri@gmail.com">sinmasuri@gmail.com</a></p>
+
+<h2>8. Changes</h2>
+<p>We will post any changes to this policy on this page with a new effective date. If the way Google user data is used changes, we will also notify you in the App and ask for consent again where required.</p>
+</section>
+</main>
+
+<footer><div class="wrap">
+  <span>© 2026 김형수 (Kim Hyeong-su)</span>
+  <a href="./">바탕화면 달력 홈 / Home</a>
+  <span>문의 / Contact: <a href="mailto:sinmasuri@gmail.com">sinmasuri@gmail.com</a></span>
+</div></footer>
+</body>
+</html>
