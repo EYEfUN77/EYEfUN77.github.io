@@ -29,7 +29,7 @@
 <tr><td>구글 계정 이메일 주소<br><code>openid</code>, <code>email</code></td><td>로그인한 계정을 화면에 표시하고 구분합니다.</td></tr>
 <tr><td>구글 캘린더의 캘린더 목록과 일정<br><code>https://www.googleapis.com/auth/calendar</code></td><td>일정을 달력에 표시합니다. 사용자가 요청할 때만 일정을 추가·수정·삭제하고, 반복 일정의 기간·범위를 바꾸고, 새 캘린더를 만들어 사용자가 적은 이메일 주소에 공유(초대)합니다.</td></tr>
 <tr><td>구글 할 일<br><code>https://www.googleapis.com/auth/tasks</code></td><td>할 일을 달력에 표시하고, 사용자가 요청할 때 할 일을 추가·완료·삭제합니다.</td></tr>
-<tr><td>앱이 만든 구글 드라이브 파일<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>사용자가 일정에 첨부한 사진을 사용자의 드라이브 "바탕화면 달력 첨부사진" 폴더에 올리고 보여 줍니다. 앱이 만들지 않은 파일에는 접근하지 않습니다.</td></tr>
+<tr><td>앱이 만든 구글 드라이브 파일<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>사용자가 일정에 첨부한 사진과 문서(PDF·엑셀·한글 등)를 사용자의 드라이브 "바탕화면 달력 첨부사진"·"바탕화면 달력 첨부파일" 폴더에 올리고 보여 줍니다. 분류·색 같은 설정을 휴대폰과 맞추는 "바탕화면 달력 설정.json" 파일도 이 권한으로 만듭니다. 앱이 만들지 않은 파일에는 접근하지 않습니다.</td></tr>
 <tr><td>구글 드라이브 앱 설정 공간<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>분류·색, 학기 주차, 스티커, 일정 틀 같은 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
 </table>
 <p>앱은 위 목적 외에 구글 사용자 데이터를 사용하지 않습니다. 사람(개발자 포함)이 사용자의 구글 데이터를 열람하지 않습니다. 다만 사용자가 오류 확인을 위해 직접 동의한 경우, 보안 사고 조사, 법령 준수에 필요한 경우는 예외입니다.</p>
@@ -40,6 +40,8 @@
 <h3>구글 데이터가 아닌 정보</h3>
 <ul>
 <li><b>날씨용 위치</b>: 날씨 표시를 켜 두면, Windows 위치 서비스에서 받은 대략적인 위도·경도를 날씨 서비스(Open-Meteo, open-meteo.com)에 보내 오늘 날씨를 받아 옵니다. 위치를 허용하지 않으면 울산 날씨를 보여 줍니다. 날씨 표시는 설정에서 끌 수 있습니다.</li>
+<li><b>장소 검색</b>: 일정의 장소 칸에서 검색하면, 사용자가 입력한 검색어만 개발자의 구글 Apps Script 웹 앱을 거쳐 카카오 로컬 API(카카오맵)로 보내 장소 이름·주소·좌표를 받아 옵니다. 검색어 외의 계정·일정 정보는 보내지 않으며, 같은 검색어의 결과를 빠르게 보여 주기 위해 최대 6시간 임시 보관한 뒤 지웁니다.</li>
+<li><b>길안내(내비게이션)</b>: 🚗 길안내 버튼을 누르면 해당 장소의 이름과 좌표를 사용자가 고른 지도·내비 앱(카카오내비, 카카오맵, 네이버 지도, 티맵, 구글 지도)이나 휴대폰 공유 기능(테슬라 앱 등)으로 넘깁니다. 이후 처리는 각 앱의 개인정보처리방침을 따릅니다.</li>
 <li><b>화면 파일 내려받기</b>: 앱은 실행할 때 개발자의 구글 Apps Script 웹 앱에서 최신 달력 화면 파일을 내려받습니다. 이 요청에는 사용자의 계정이나 일정 정보가 들어가지 않습니다.</li>
 <li>앱은 사용 통계, 광고 식별자, 쿠키 추적을 수집하지 않습니다.</li>
 </ul>
@@ -60,7 +62,7 @@
 <li><b>로그아웃</b>: 앱 메뉴 → 계정 → 로그아웃. PC에 남은 인증 토큰과 사본을 지웁니다.</li>
 <li><b>권한 철회</b>: <a href="https://myaccount.google.com/permissions" target="_blank" rel="noopener">구글 계정 → 보안 → 서드 파티 앱 및 서비스</a>에서 "바탕화면 달력"의 접근 권한을 언제든지 삭제할 수 있습니다.</li>
 <li><b>앱 설정 삭제</b>: 구글 드라이브 웹 → 설정 → 앱 관리에서 "바탕화면 달력"의 숨겨진 앱 데이터를 삭제할 수 있습니다.</li>
-<li><b>첨부 사진 삭제</b>: 구글 드라이브의 "바탕화면 달력 첨부사진" 폴더에서 직접 지울 수 있습니다.</li>
+<li><b>첨부 사진·파일 삭제</b>: 구글 드라이브의 "바탕화면 달력 첨부사진"·"바탕화면 달력 첨부파일" 폴더에서 직접 지울 수 있습니다.</li>
 <li><b>앱 제거</b>: Windows 설정 → 앱에서 "바탕화면 달력"을 제거하세요. 남은 <code>%APPDATA%\DesktopCalendar</code> 폴더는 직접 지울 수 있습니다.</li>
 <li>개인정보 열람·정정·삭제 요청이나 문의는 아래 이메일로 보내 주세요.</li>
 </ul>
@@ -97,7 +99,7 @@
 <tr><td>Google account email address<br><code>openid</code>, <code>email</code></td><td>Show and identify the signed-in account.</td></tr>
 <tr><td>Google Calendar calendars and events<br><code>https://www.googleapis.com/auth/calendar</code></td><td>Display your events on the desktop calendar. Only at your request: create, edit and delete events; change the period or scope of recurring events; create a new calendar and share it with email addresses you enter.</td></tr>
 <tr><td>Google Tasks<br><code>https://www.googleapis.com/auth/tasks</code></td><td>Display your tasks and, at your request, add, complete or delete tasks.</td></tr>
-<tr><td>Google Drive files created by the App<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>Upload and show photos you attach to events, stored in a "바탕화면 달력 첨부사진" folder in your Drive. The App cannot access Drive files it did not create.</td></tr>
+<tr><td>Google Drive files created by the App<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>Upload and show photos and documents (PDF, Excel, Hangul, etc.) you attach to events, stored in "바탕화면 달력 첨부사진" / "바탕화면 달력 첨부파일" folders in your Drive, and keep a "바탕화면 달력 설정.json" settings file so your phone and PC share the same categories and colors. The App cannot access Drive files it did not create.</td></tr>
 <tr><td>Google Drive app data folder<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>Store your app settings (categories, colors, semester weeks, stickers, templates) in the hidden app-specific folder so they are available on your other PCs.</td></tr>
 </table>
 <p>Google user data is used only for these user-facing features. No human, including the Developer, reads your Google data, except with your explicit consent for troubleshooting, for security purposes, or to comply with applicable law.</p>
