@@ -12,18 +12,77 @@
 <link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
-html,body{margin:0;height:100%;background:#16805a;overflow:hidden}
-iframe{position:fixed;inset:0;width:100%;height:100%;border:0;background:#fff}
-#ld{position:fixed;inset:0;z-index:2;background:#16805a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;font:600 16px/1.4 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;transition:opacity .3s}
+html,body{margin:0;height:100%;background:#16805a}
+#ld{position:fixed;inset:0;background:#16805a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;font:600 16px/1.5 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;text-align:center;padding:0 24px}
 #ld img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#ld small{font-weight:500;opacity:.85}
+#ld button{margin-top:6px;border:0;border-radius:999px;padding:10px 20px;font:700 15px inherit;background:#fff;color:#16805a}
 </style>
 </head>
 <body>
-<div id="ld"><img src="icon-192.png" alt=""><div>바탕화면 달력 불러오는 중…</div></div>
-<iframe id="cal" title="바탕화면 달력" allow="geolocation; clipboard-write; clipboard-read" src="https://script.google.com/macros/s/AKfycbwWQywc263qUTpraUo1FIfcllv1g02fnXgieYk25hT7kMHioN7Pc_HSfN2z9GQocKUN4Q/exec"></iframe>
+<div id="ld"><img src="icon-192.png" alt=""><div id="msg">바탕화면 달력 불러오는 중…</div></div>
 <script>
-document.getElementById('cal').addEventListener('load',function(){var l=document.getElementById('ld');l.style.opacity=0;setTimeout(function(){l.remove()},400);});
-if('serviceWorker' in navigator){navigator.serviceWorker.register('sw.js').catch(function(){});}
+/* 바탕화면 달력 — 휴대폰 앱 껍데기
+   달력 화면을 휴대폰에 저장해 두고 그것으로 실행합니다. 인터넷이 없으면 저장된 화면과
+   마지막으로 받은 일정을 보여 주고, 인터넷이 되면 새 화면·새 일정을 자동으로 받습니다. */
+var API='https://script.google.com/macros/s/AKfycbwWQywc263qUTpraUo1FIfcllv1g02fnXgieYk25hT7kMHioN7Pc_HSfN2z9GQocKUN4Q/exec';
+var CK='dcal.uiCache';
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+
+function $(id){ return document.getElementById(id); }
+function getCache(){ try{ var c=JSON.parse(localStorage.getItem(CK)||'null'); return isUi(c)?c:null; }catch(e){ return null; } }
+function setCache(ui){ try{ localStorage.setItem(CK, JSON.stringify({ id:ui.id||'', html:ui.html })); }catch(e){} }
+function isUi(ui){ return !!(ui && ui.html && String(ui.html).length>30000 && String(ui.html).indexOf('/*__CONFIG__*/')>=0); }
+function hasToken(){ try{ var t=JSON.parse(localStorage.getItem('dcal.token')||'null'); return !!(t && t.token); }catch(e){ return false; } }
+function withTimeout(p, ms){ return new Promise(function(res,rej){ var t=setTimeout(function(){ rej(new Error('시간 초과')); },ms); p.then(function(v){ clearTimeout(t); res(v); },function(e){ clearTimeout(t); rej(e); }); }); }
+function getJson(action, ms){
+  return withTimeout(fetch(API+'?action='+action+'&t='+Date.now(),{ redirect:'follow', cache:'no-store' }).then(function(r){ return r.json(); }), ms)
+    .then(function(j){ if(!j || !j.ok) throw new Error((j&&j.error)||'서버 응답 오류'); return j.data; });
+}
+function show(ui){
+  var inject='window.CAL_CONFIG='+JSON.stringify({ apiUrl:API })+';window.CAL_PWA=true;window.CAL_UI_ID='+JSON.stringify(ui.id||'')+';';
+  var html=String(ui.html).replace('/*__CONFIG__*/', inject);
+  document.open(); document.write(html); document.close();
+}
+function fail(e){
+  $('msg').innerHTML='달력을 불러오지 못했습니다.<br><small>'+String((e&&e.message)||e).replace(/</g,'&lt;')+'<br>처음 한 번은 인터넷이 연결된 상태에서 열어야 합니다.</small><br><button onclick="location.reload()">다시 시도</button>';
+}
+
+/* 예전 앱(구글 화면을 감싸던 방식)에서 쓰던 로그인을 한 번만 이어받기 */
+function handoff(){
+  if(hasToken() || !navigator.onLine) return Promise.resolve();
+  try{ if(localStorage.getItem('dcal.handoff')) return Promise.resolve(); localStorage.setItem('dcal.handoff','1'); }catch(e){}
+  return new Promise(function(res){
+    var done=false, fr=document.createElement('iframe');
+    function end(){ if(done) return; done=true; window.removeEventListener('message',on); try{ fr.remove(); }catch(e){} res(); }
+    function on(e){
+      if(!/^https:\/\/[a-z0-9.-]+\.googleusercontent\.com$/.test(e.origin)) return;
+      var d=e.data||{}; if(d.type!=='dcal-token' || !d.tok || !d.tok.token) return;
+      try{ localStorage.setItem('dcal.token', JSON.stringify(d.tok)); if(d.ui && !localStorage.getItem('dcal.ui')) localStorage.setItem('dcal.ui', JSON.stringify(d.ui)); }catch(x){}
+      end();
+    }
+    window.addEventListener('message',on);
+    fr.style.cssText='position:fixed;width:1px;height:1px;left:-10px;top:-10px;opacity:0;border:0';
+    fr.src=API; document.body.appendChild(fr);
+    setTimeout(end, 8000);
+  });
+}
+
+function start(){
+  var cached=getCache();
+  if(cached && !navigator.onLine) return show(cached);          /* 비행기 모드 등: 저장된 화면으로 바로 */
+  handoff().then(function(){
+    /* 저장된 화면이 최신인지 짧게 확인(느린 와이파이면 저장된 화면 사용) */
+    return getJson('uiVersion', 3500).then(function(v){
+      if(cached && v && v.id && v.id===cached.id) return cached;
+      return getJson('ui', 20000).then(function(ui){ if(!isUi(ui)) throw new Error('화면 파일이 올바르지 않습니다.'); setCache(ui); return ui; });
+    }, function(e){
+      if(cached) return cached;
+      return getJson('ui', 20000).then(function(ui){ if(!isUi(ui)) throw e; setCache(ui); return ui; });
+    });
+  }).then(show, function(e){ if(cached) show(cached); else fail(e); });
+}
+if(document.readyState==='complete') setTimeout(start,0); else window.addEventListener('load',start);
 </script>
 </body>
 </html>
