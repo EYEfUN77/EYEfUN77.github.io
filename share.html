@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<title>테슬라로 목적지 보내기</title>
+<style>
+:root{--bg:#f6f7f9;--card:#fff;--ink:#1d2330;--muted:#5b6475;--line:#e3e6ec;--accent:#e31937}
+@media (prefers-color-scheme:dark){:root{--bg:#14171c;--card:#1e232b;--ink:#eef1f6;--muted:#a3abb9;--line:#2e3540}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.55}
+.wrap{max-width:460px;margin:0 auto;padding:32px 16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px}
+h1{font-size:1.25rem;margin:0 0 14px}
+.n{font-weight:700;font-size:1.1rem;margin:0}
+.a{color:var(--muted);margin:2px 0 18px;word-break:keep-all}
+button{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:1.05rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit}
+#share{background:var(--accent);color:#fff}
+#copy{background:transparent;color:var(--ink);border:1px solid var(--line)}
+ol{color:var(--muted);font-size:.92rem;padding-left:1.2em;margin:18px 0 0}
+#msg{min-height:1.4em;color:var(--accent);font-size:.92rem;margin-top:10px;text-align:center}
+</style>
+</head>
+<body>
+<div class="wrap"><div class="card">
+  <h1>🚗 테슬라로 목적지 보내기</h1>
+  <p class="n" id="n"></p>
+  <p class="a" id="a"></p>
+  <button id="share">테슬라로 보내기</button>
+  <button id="copy">주소만 복사</button>
+  <div id="msg"></div>
+  <ol>
+    <li>[테슬라로 보내기]를 누르면 휴대폰 공유창이 뜹니다.</li>
+    <li>공유창에서 <b>Tesla</b> 앱을 고르면 차량 내비에 목적지가 바로 들어갑니다.</li>
+    <li>공유창에 Tesla가 없으면 [주소만 복사] 후 Tesla 앱 → 내비게이션 검색에 붙여넣으세요.</li>
+  </ol>
+</div></div>
+<script>
+var p=new URLSearchParams(location.search), n=(p.get('n')||'').slice(0,200), a=(p.get('a')||n).slice(0,300);
+document.getElementById('n').textContent=n||'목적지';
+document.getElementById('a').textContent=a;
+var msg=document.getElementById('msg');
+function copy(){
+  function old(){ var t=document.createElement('textarea'); t.value=a; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} t.remove(); }
+  if(navigator.clipboard) navigator.clipboard.writeText(a).then(function(){},old); else old();
+  msg.textContent='주소를 복사했습니다.';
+}
+if(!navigator.share){ document.getElementById('share').style.display='none'; msg.textContent='이 브라우저는 공유 기능을 지원하지 않습니다. 주소를 복사해 사용하세요.'; }
+document.getElementById('share').onclick=function(){
+  navigator.share({ title:n, text:a }).catch(function(e){ if(e && e.name!=='AbortError'){ copy(); } });
+};
+document.getElementById('copy').onclick=copy;
+</script>
+</body>
+</html>
