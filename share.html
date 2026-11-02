@@ -10,15 +10,18 @@
 @media (prefers-color-scheme:dark){:root{--bg:#14171c;--card:#1e232b;--ink:#eef1f6;--muted:#a3abb9;--line:#2e3540}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:"Pretendard","Apple SD Gothic Neo","Noto Sans KR",sans-serif;line-height:1.55}
-.wrap{max-width:460px;margin:0 auto;padding:32px 16px}
+.wrap{max-width:460px;margin:0 auto;padding:28px 16px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:22px 20px}
 h1{font-size:1.25rem;margin:0 0 14px}
 .n{font-weight:700;font-size:1.1rem;margin:0}
-.a{color:var(--muted);margin:2px 0 18px;word-break:keep-all}
-button{display:block;width:100%;border:0;border-radius:14px;padding:16px;font-size:1.05rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit}
-#share{background:var(--accent);color:#fff}
-#copy{background:transparent;color:var(--ink);border:1px solid var(--line)}
-ol{color:var(--muted);font-size:.92rem;padding-left:1.2em;margin:18px 0 0}
+.a{color:var(--muted);margin:2px 0 4px;word-break:keep-all}
+.g{color:var(--muted);font-size:.85rem;margin:0 0 14px}
+button{display:block;width:100%;border:0;border-radius:14px;padding:15px;font-size:1.02rem;font-weight:700;cursor:pointer;margin-top:10px;font-family:inherit;text-align:left}
+button small{display:block;font-weight:500;font-size:.8rem;opacity:.85;margin-top:2px}
+.pri{background:var(--accent);color:#fff}
+.sec{background:transparent;color:var(--ink);border:1px solid var(--line)}
+button:disabled{opacity:.45}
+ol{color:var(--muted);font-size:.9rem;padding-left:1.2em;margin:18px 0 0}
 #msg{min-height:1.4em;color:var(--accent);font-size:.92rem;margin-top:10px;text-align:center}
 </style>
 </head>
@@ -27,30 +30,48 @@ ol{color:var(--muted);font-size:.92rem;padding-left:1.2em;margin:18px 0 0}
   <h1>🚗 테슬라로 목적지 보내기</h1>
   <p class="n" id="n"></p>
   <p class="a" id="a"></p>
-  <button id="share">테슬라로 보내기</button>
-  <button id="copy">주소만 복사</button>
+  <p class="g" id="g"></p>
+  <button class="pri" id="bGeo">① 정확한 위치(좌표)로 보내기<small>추천 — 지도 위 그 지점으로 바로 안내</small></button>
+  <button class="sec" id="bMap">② 구글 지도 링크로 보내기<small>①이 안 될 때</small></button>
+  <button class="sec" id="bAddr">③ 주소 글자로 보내기<small>테슬라가 비슷한 주소를 찾아 줌(부정확할 수 있음)</small></button>
+  <button class="sec" id="bCopy">주소만 복사</button>
   <div id="msg"></div>
   <ol>
-    <li>[테슬라로 보내기]를 누르면 휴대폰 공유창이 뜹니다.</li>
-    <li>공유창에서 <b>Tesla</b> 앱을 고르면 차량 내비에 목적지가 바로 들어갑니다.</li>
-    <li>공유창에 Tesla가 없으면 [주소만 복사] 후 Tesla 앱 → 내비게이션 검색에 붙여넣으세요.</li>
+    <li>버튼을 누르면 휴대폰 공유창이 뜹니다.</li>
+    <li>공유창에서 <b>Tesla</b> 앱을 고르면 차량 내비로 목적지가 전송됩니다.</li>
   </ol>
 </div></div>
 <script>
-var p=new URLSearchParams(location.search), n=(p.get('n')||'').slice(0,200), a=(p.get('a')||n).slice(0,300);
-document.getElementById('n').textContent=n||'목적지';
-document.getElementById('a').textContent=a;
-var msg=document.getElementById('msg');
-function copy(){
-  function old(){ var t=document.createElement('textarea'); t.value=a; document.body.appendChild(t); t.select(); try{document.execCommand('copy');}catch(e){} t.remove(); }
-  if(navigator.clipboard) navigator.clipboard.writeText(a).then(function(){},old); else old();
-  msg.textContent='주소를 복사했습니다.';
+var API='https://script.google.com/macros/s/AKfycbwWQywc263qUTpraUo1FIfcllv1g02fnXgieYk25hT7kMHioN7Pc_HSfN2z9GQocKUN4Q/exec';
+var p=new URLSearchParams(location.search), n=(p.get('n')||'').slice(0,200), a=(p.get('a')||n).slice(0,300), geo=null;
+var gp=(p.get('g')||'').split(',');
+if(gp.length===2 && isFinite(+gp[0]) && isFinite(+gp[1]) && +gp[0] && +gp[1]) geo=[(+gp[0]).toFixed(6),(+gp[1]).toFixed(6)];
+var $=function(id){ return document.getElementById(id); }, msg=$('msg');
+$('n').textContent=n||'목적지'; $('a').textContent=a;
+function showGeo(){
+  $('g').textContent=geo?('위치: '+geo[0]+', '+geo[1]):'정확한 위치를 찾는 중…';
+  $('bGeo').disabled=$('bMap').disabled=!geo;
 }
-if(!navigator.share){ document.getElementById('share').style.display='none'; msg.textContent='이 브라우저는 공유 기능을 지원하지 않습니다. 주소를 복사해 사용하세요.'; }
-document.getElementById('share').onclick=function(){
-  navigator.share({ title:n, text:a }).catch(function(e){ if(e && e.name!=='AbortError'){ copy(); } });
-};
-document.getElementById('copy').onclick=copy;
+showGeo();
+if(!geo && (n||a)){ /* 좌표가 없으면 장소 이름으로 찾아봄 */
+  fetch(API+'?action=place&q='+encodeURIComponent(n||a),{redirect:'follow'}).then(function(r){ return r.json(); }).then(function(j){
+    var d=j && j.ok && j.data && j.data[0];
+    if(d && +d.y && +d.x){ geo=[(+d.y).toFixed(6),(+d.x).toFixed(6)]; showGeo(); }
+    else { $('g').textContent='정확한 위치를 찾지 못했습니다. ③ 주소로 보내기를 사용하세요.'; }
+  }).catch(function(){ $('g').textContent='정확한 위치를 찾지 못했습니다. ③ 주소로 보내기를 사용하세요.'; });
+}
+function copy(t){
+  function old(){ var x=document.createElement('textarea'); x.value=t; document.body.appendChild(x); x.select(); try{document.execCommand('copy');}catch(e){} x.remove(); }
+  if(navigator.clipboard) navigator.clipboard.writeText(t).then(function(){},old); else old();
+}
+function share(text){
+  if(!navigator.share){ copy(text); msg.textContent='공유 기능이 없어 복사했습니다. Tesla 앱 검색에 붙여넣으세요.'; return; }
+  navigator.share({ text:text }).catch(function(e){ if(e && e.name!=='AbortError'){ copy(text); msg.textContent='공유하지 못해 복사했습니다.'; } });
+}
+$('bGeo').onclick=function(){ if(geo) share(geo[0]+', '+geo[1]); };
+$('bMap').onclick=function(){ if(geo) share('https://www.google.com/maps/search/?api=1&query='+geo[0]+','+geo[1]); };
+$('bAddr').onclick=function(){ share(a); };
+$('bCopy').onclick=function(){ copy(a); msg.textContent='주소를 복사했습니다.'; };
 </script>
 </body>
 </html>
