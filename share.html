@@ -31,10 +31,10 @@ ol{color:var(--muted);font-size:.9rem;padding-left:1.2em;margin:18px 0 0}
   <p class="n" id="n"></p>
   <p class="a" id="a"></p>
   <p class="g" id="g"></p>
-  <button class="pri" id="bGeo">① 정확한 위치(좌표)로 보내기<small>추천 — 지도 위 그 지점으로 안내(주소는 테슬라가 지번으로 표시)</small></button>
-  <button class="sec" id="bName">② 장소 이름으로 보내기<small>테슬라가 이름으로 찾아 '장소 이름'으로 표시(목록에서 고르기)</small></button>
-  <button class="sec" id="bMap">③ 구글 지도 링크로 보내기<small>①이 안 될 때</small></button>
-  <button class="sec" id="bAddr">④ 주소 글자로 보내기<small>테슬라가 비슷한 주소를 찾아 줌(부정확할 수 있음)</small></button>
+  <button class="pri" id="bAddr">① 도로명 주소로 보내기<small>추천 — 주소 그대로 보냄</small></button>
+  <button class="sec" id="bName">② 장소 이름으로 보내기<small>테슬라가 이름으로 찾아 표시(목록에서 고르기)</small></button>
+  <button class="sec" id="bGeo">③ 좌표로 보내기<small>주소로 못 찾을 때 — 지번으로 표시됨</small></button>
+  <button class="sec" id="bMap">④ 구글 지도 링크로 보내기</button>
   <button class="sec" id="bCopy">주소만 복사</button>
   <div id="msg"></div>
   <ol>
@@ -54,12 +54,14 @@ function showGeo(){
   $('bGeo').disabled=$('bMap').disabled=!geo;
 }
 showGeo();
-if(!geo && (n||a)){ /* 좌표가 없으면 장소 이름으로 찾아봄 */
+var noAddr=!p.get('a')||a===n;
+if((!geo||noAddr) && (n||a)){ /* 좌표가 없으면 장소 이름으로 찾아봄 */
   fetch(API+'?action=place&q='+encodeURIComponent(n||a),{redirect:'follow'}).then(function(r){ return r.json(); }).then(function(j){
     var d=j && j.ok && j.data && j.data[0];
-    if(d && +d.y && +d.x){ geo=[(+d.y).toFixed(6),(+d.x).toFixed(6)]; showGeo(); }
-    else { $('g').textContent='정확한 위치를 찾지 못했습니다. ② 이름 또는 ④ 주소로 보내기를 사용하세요.'; }
-  }).catch(function(){ $('g').textContent='정확한 위치를 찾지 못했습니다. ② 이름 또는 ④ 주소로 보내기를 사용하세요.'; });
+    if(d && noAddr && (d.road||d.addr)){ a=d.road||d.addr; $('a').textContent=a; }
+    if(d && +d.y && +d.x){ if(!geo) geo=[(+d.y).toFixed(6),(+d.x).toFixed(6)]; showGeo(); }
+    else if(!geo){ $('g').textContent='정확한 위치를 찾지 못했습니다. ① 주소 또는 ② 이름으로 보내기를 사용하세요.'; }
+  }).catch(function(){ if(!geo) $('g').textContent='정확한 위치를 찾지 못했습니다. ① 주소 또는 ② 이름으로 보내기를 사용하세요.'; });
 }
 function copy(t){
   function old(){ var x=document.createElement('textarea'); x.value=t; document.body.appendChild(x); x.select(); try{document.execCommand('copy');}catch(e){} x.remove(); }
