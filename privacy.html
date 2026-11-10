@@ -42,6 +42,8 @@
 <li><b>날씨용 위치</b>: 날씨 표시를 켜 두면, Windows 위치 서비스에서 받은 대략적인 위도·경도를 날씨 서비스(Open-Meteo, open-meteo.com)에 보내 오늘 날씨를 받아 옵니다. 위치를 허용하지 않으면 울산 날씨를 보여 줍니다. 날씨 표시는 설정에서 끌 수 있습니다.</li>
 <li><b>장소 검색</b>: 일정의 장소 칸에서 검색하면, 사용자가 입력한 검색어만 개발자의 구글 Apps Script 웹 앱을 거쳐 카카오 로컬 API(카카오맵)로 보내 장소 이름·주소·좌표를 받아 옵니다. 검색어 외의 계정·일정 정보는 보내지 않으며, 같은 검색어의 결과를 빠르게 보여 주기 위해 최대 6시간 임시 보관한 뒤 지웁니다.</li>
 <li><b>길안내(내비게이션)</b>: 🚗 길안내 버튼을 누르면 해당 장소의 이름과 좌표를 사용자가 고른 지도·내비 앱(카카오내비, 카카오맵, 네이버 지도, 티맵, 구글 지도)이나 휴대폰 공유 기능(테슬라 앱 등)으로 넘깁니다. 이후 처리는 각 앱의 개인정보처리방침을 따릅니다.</li>
+<li><b>외부 달력 구독</b>: 사용자가 웹 달력 주소(ICS·webcal)를 추가하면, PC 앱은 그 주소에서 달력 파일을 직접 받고, 웹·휴대폰 버전은 개발자의 구글 Apps Script 웹 앱을 거쳐 받습니다(최대 30분 임시 보관). 받은 일정은 사용자 기기에만 저장되며, 구독 주소 목록은 사용자 구글 드라이브의 앱 설정에 저장됩니다.</li>
+<li><b>다른 구글 계정 함께 보기(PC 앱)</b>: 사용자가 계정을 추가하면 그 계정의 캘린더 권한만 요청하며, 인증 토큰은 기본 계정과 같은 방식으로 암호화해 사용자의 PC에만 보관합니다. 계정을 빼거나 로그아웃하면 토큰을 지우고 구글에 폐기를 요청합니다.</li>
 <li><b>화면 파일 내려받기</b>: 앱은 실행할 때 개발자의 구글 Apps Script 웹 앱에서 최신 달력 화면 파일을 내려받습니다. 이 요청에는 사용자의 계정이나 일정 정보가 들어가지 않습니다.</li>
 <li>앱은 사용 통계, 광고 식별자, 쿠키 추적을 수집하지 않습니다.</li>
 </ul>
@@ -111,6 +113,8 @@
 <ul>
 <li><b>Location for weather</b>: if the weather display is on, approximate latitude/longitude from Windows location services is sent to Open-Meteo (open-meteo.com) to get today's forecast. If location is not allowed, a default city (Ulsan, Korea) is used. You can turn the weather display off in settings.</li>
 <li><b>Interface file download</b>: on start, the App downloads the latest calendar interface file from the Developer's Google Apps Script web app. This request contains no account or calendar data.</li>
+<li><b>Web calendar subscriptions</b>: when you add a web calendar (ICS/webcal) address, the PC app downloads it directly, and the web/mobile version downloads it through the Developer's Google Apps Script web app (cached for up to 30 minutes). Events are stored only on your device; the list of subscriptions is saved in the app settings in your Google Drive.</li>
+<li><b>Additional Google accounts (PC app)</b>: when you add another account, the App requests only calendar access for it and keeps its token encrypted on your PC. Removing the account or signing out deletes the token and asks Google to revoke it.</li>
 <li>The App does not collect analytics, advertising IDs or tracking cookies.</li>
 </ul>
 
