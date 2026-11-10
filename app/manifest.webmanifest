@@ -1,5 +1,5 @@
 {
-  "name": "바탕화면 달력",
+  "name": "바탕화면 달력(iCalendar)",
   "short_name": "바탕화면 달력",
   "description": "구글 캘린더와 연동되는 달력",
   "lang": "ko",
