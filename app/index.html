@@ -27,6 +27,7 @@ html,body{margin:0;height:100%;background:#1f5fd1}
    마지막으로 받은 일정을 보여 주고, 인터넷이 되면 새 화면·새 일정을 자동으로 받습니다. */
 var API='https://script.google.com/macros/s/AKfycbwWQywc263qUTpraUo1FIfcllv1g02fnXgieYk25hT7kMHioN7Pc_HSfN2z9GQocKUN4Q/exec';
 var CK='dcal.uiCache';
+var EN=(function(){ try{ var u=JSON.parse(localStorage.getItem('dcal.ui')||'null')||{}; if(u.lang) return u.lang==='en'; }catch(e){} return !/^ko/i.test(navigator.language||'ko'); })();
 if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
 
 function $(id){ return document.getElementById(id); }
@@ -44,8 +45,9 @@ function show(ui){
   var html=String(ui.html).replace('/*__CONFIG__*/', inject);
   document.open(); document.write(html); document.close();
 }
+if(EN){ try{ document.getElementById('msg').textContent='Loading Desktop Calendar…'; document.title='Desktop Calendar'; }catch(e){} }
 function fail(e){
-  $('msg').innerHTML='달력을 불러오지 못했습니다.<br><small>'+String((e&&e.message)||e).replace(/</g,'&lt;')+'<br>처음 한 번은 인터넷이 연결된 상태에서 열어야 합니다.</small><br><button onclick="location.reload()">다시 시도</button>';
+  $('msg').innerHTML=(EN?'Could not load the calendar.':'달력을 불러오지 못했습니다.')+'<br><small>'+String((e&&e.message)||e).replace(/</g,'&lt;')+'<br>'+(EN?'Open it once with an internet connection first.':'처음 한 번은 인터넷이 연결된 상태에서 열어야 합니다.')+'</small><br><button onclick="location.reload()">'+(EN?'Try again':'다시 시도')+'</button>';
 }
 
 /* 예전 앱(구글 화면을 감싸던 방식)에서 쓰던 로그인을 한 번만 이어받기 */
