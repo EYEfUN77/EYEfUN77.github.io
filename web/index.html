@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>바탕화면 달력(iCalendar)</title>
+<meta name="theme-color" content="#1f5fd1">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="바탕화면 달력">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icon-192.png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<style>
+html,body{margin:0;height:100%;background:#1f5fd1}
+#ld{position:fixed;inset:0;background:#1f5fd1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;font:600 16px/1.5 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;text-align:center;padding:0 24px}
+#ld img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+#ld small{font-weight:500;opacity:.85}
+#ld button{margin-top:6px;border:0;border-radius:999px;padding:10px 20px;font:700 15px inherit;background:#fff;color:#1f5fd1}
+</style>
+</head>
+<body>
+<div id="ld"><img src="icon-192.png" alt=""><div id="msg">바탕화면 달력 불러오는 중…</div></div>
+<script>
+/* 바탕화면 달력 — 휴대폰·웹 버전(각자 자기 구글 계정으로 직접 연결)
+   달력 화면은 서버에서 받아 이 기기에 저장해 두고, 일정은 gweb.js 가 내 구글 캘린더에서 직접 가져옵니다.
+   (교수님 전용 /app 은 기존 서버 계정 방식 그대로) */
+var API='https://script.google.com/macros/s/AKfycbwWQywc263qUTpraUo1FIfcllv1g02fnXgieYk25hT7kMHioN7Pc_HSfN2z9GQocKUN4Q/exec';
+var GCFG={ clientId:'' /*__GWEB_CLIENT_ID__*/ };
+var CK='dcal.uiCache', GK='dcal.gwebSrc';
+var EN=(function(){ try{ var u=JSON.parse(localStorage.getItem('dcal.ui')||'null')||{}; if(u.lang) return u.lang==='en'; }catch(e){} return !/^ko/i.test(navigator.language||'ko'); })();
+if(EN){ document.getElementById('msg').textContent='Loading Desktop Calendar…'; document.title='Desktop Calendar (iCalendar)'; }
+if('serviceWorker' in navigator){ navigator.serviceWorker.register('sw.js').catch(function(){}); }
+
+/* 구글 로그인에서 돌아온 경우(#access_token=… 또는 #error=…): 주소에서 지우고 따로 보관 */
+var AUTH_HASH='';
+if(/(^|[#&])(access_token|error)=/.test(location.hash)){ AUTH_HASH=location.hash; try{ history.replaceState(null,'',location.pathname+location.search); }catch(e){} }
+
+function $(id){ return document.getElementById(id); }
+function getCache(){ try{ var c=JSON.parse(localStorage.getItem(CK)||'null'); return isUi(c)?c:null; }catch(e){ return null; } }
+function setCache(ui){ try{ localStorage.setItem(CK, JSON.stringify({ id:ui.id||'', html:ui.html })); }catch(e){} }
+function isUi(ui){ return !!(ui && ui.html && String(ui.html).length>30000 && String(ui.html).indexOf('/*__CONFIG__*/')>=0); }
+function withTimeout(p, ms){ return new Promise(function(res,rej){ var t=setTimeout(function(){ rej(new Error(EN?'Timed out':'시간 초과')); },ms); p.then(function(v){ clearTimeout(t); res(v); },function(e){ clearTimeout(t); rej(e); }); }); }
+function getJson(action, ms){
+  return withTimeout(fetch(API+'?action='+action+'&t='+Date.now(),{ redirect:'follow', cache:'no-store' }).then(function(r){ return r.json(); }), ms)
+    .then(function(j){ if(!j || !j.ok) throw new Error((j&&j.error)||'서버 응답 오류'); return j.data; });
+}
+/* 구글 연결 코드(gweb.js): 인터넷이 되면 새로 받고, 안 되면 저장해 둔 것 */
+function getGweb(){
+  return withTimeout(fetch('gweb.js?t='+Date.now(),{ cache:'no-store' }).then(function(r){ if(!r.ok) throw new Error('gweb'); return r.text(); }), 6000)
+    .then(function(t){ try{ localStorage.setItem(GK,t); }catch(e){} return t; })
+    .catch(function(e){ var t=null; try{ t=localStorage.getItem(GK); }catch(x){} if(t) return t; throw e; });
+}
+function show(ui, gsrc, authErr){
+  var inject='window.CAL_CONFIG='+JSON.stringify({ apiUrl:API })+';window.CAL_PWA=true;window.CAL_UI_ID='+JSON.stringify(ui.id||'')+';'+
+    'window.GWEB_CONFIG='+JSON.stringify(GCFG)+';'+(authErr?'window.GWEB_AUTH_ERR='+JSON.stringify(authErr)+';':'')+'\n'+gsrc+'\n';
+  var html=String(ui.html).replace('/*__CONFIG__*/', function(){ return inject; });
+  document.open(); document.write(html); document.close();
+}
+function fail(e){
+  $('msg').innerHTML=(EN?'Could not load the calendar.':'달력을 불러오지 못했습니다.')+'<br><small>'+String((e&&e.message)||e).replace(/</g,'&lt;')+'<br>'+(EN?'Open it once with an internet connection first.':'처음 한 번은 인터넷이 연결된 상태에서 열어야 합니다.')+'</small><br><button onclick="location.reload()">'+(EN?'Try again':'다시 시도')+'</button>';
+}
+function loadUi(){
+  var cached=getCache();
+  if(cached && !navigator.onLine) return Promise.resolve(cached);
+  return getJson('uiVersion', 3500).then(function(v){
+    if(cached && v && v.id && v.id===cached.id) return cached;
+    return getJson('ui', 20000).then(function(ui){ if(!isUi(ui)) throw new Error('화면 파일이 올바르지 않습니다.'); setCache(ui); return ui; });
+  }, function(e){
+    if(cached) return cached;
+    return getJson('ui', 20000).then(function(ui){ if(!isUi(ui)) throw e; setCache(ui); return ui; });
+  });
+}
+function start(){
+  var gsrc;
+  getGweb().then(function(t){
+    gsrc=t; window.GWEB_CONFIG=GCFG; (new Function(t))(); /* window.dcalApp 준비 */
+    if(!AUTH_HASH) return '';
+    return window.dcalApp.g.finishAuth(AUTH_HASH).then(function(r){ return r.ok?'':(r.error==='state'?'':r.error); }, function(e){ return String((e&&e.message)||e); });
+  }).then(function(authErr){
+    return loadUi().then(function(ui){ show(ui, gsrc, authErr); });
+  }).catch(fail);
+}
+if(document.readyState==='complete') setTimeout(start,0); else window.addEventListener('load',start);
+</script>
+</body>
+</html>
