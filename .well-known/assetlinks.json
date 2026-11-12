@@ -1,0 +1,8 @@
+[{
+      "relation": ["delegate_permission/common.handle_all_urls"],
+      "target": {
+        "namespace": "android_app",
+        "package_name": "org.eyefun.calendar",
+        "sha256_cert_fingerprints": ["B6:51:9A:A4:54:9F:93:03:34:FD:91:EF:D3:F5:EA:C3:85:59:FD:31:79:D8:EE:DC:01:83:BE:E8:40:DD:7C:50"]
+      }
+    }]
