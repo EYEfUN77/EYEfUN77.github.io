@@ -51,10 +51,13 @@ function getGweb(){
     .then(function(t){ try{ localStorage.setItem(GK,t); }catch(e){} return t; })
     .catch(function(e){ var t=null; try{ t=localStorage.getItem(GK); }catch(x){} if(t) return t; throw e; });
 }
+var PWA_HEAD='<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1f5fd1"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="바탕화면 달력"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="icon-180.png">';
 function show(ui, gsrc, authErr){
   var inject='window.CAL_CONFIG='+JSON.stringify({ apiUrl:API })+';window.CAL_PWA=true;window.CAL_UI_ID='+JSON.stringify(ui.id||'')+';'+
     'window.GWEB_CONFIG='+JSON.stringify(GCFG)+';'+(authErr?'window.GWEB_AUTH_ERR='+JSON.stringify(authErr)+';':'')+'\n'+gsrc+'\n';
   var html=String(ui.html).replace('/*__CONFIG__*/', function(){ return inject; });
+  /* 달력 화면으로 바꿔 쓸 때 설치 정보(manifest)가 사라지지 않게 다시 넣음 — 없으면 크롬이 '설치할 수 없음'으로 판단 */
+  html=html.replace(/<head[^>]*>/i, function(m){ return m+PWA_HEAD; });
   document.open(); document.write(html); document.close();
 }
 function fail(e){
