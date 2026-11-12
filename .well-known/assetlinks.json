@@ -3,6 +3,6 @@
       "target": {
         "namespace": "android_app",
         "package_name": "org.eyefun.calendar",
-        "sha256_cert_fingerprints": ["B6:51:9A:A4:54:9F:93:03:34:FD:91:EF:D3:F5:EA:C3:85:59:FD:31:79:D8:EE:DC:01:83:BE:E8:40:DD:7C:50"]
+        "sha256_cert_fingerprints": ["74:E1:DD:FC:B1:E2:01:51:27:28:A4:0C:C6:2F:E2:9E:73:F0:B0:3C:DF:C8:29:CB:1D:BF:8C:BE:7B:57:AA:A1"]
       }
     }]
