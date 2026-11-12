@@ -46,3 +46,8 @@ footer a{color:var(--muted)}
 .dlbtn:hover{filter:brightness(1.06)}
 .dlbtn.alt{background:var(--card);color:var(--text,inherit);border:1px solid var(--line);box-shadow:none}
 .cta .sub{font-weight:600;color:var(--muted)}
+
+.why .card{border-top:4px solid var(--accent)}
+.why .card .num{display:inline-block;font-size:.78rem;font-weight:800;color:var(--accent);letter-spacing:.04em;margin-bottom:4px}
+.why .lead2{color:var(--muted);margin:-6px 0 18px}
+html:lang(ko) body{word-break:keep-all;overflow-wrap:anywhere}
