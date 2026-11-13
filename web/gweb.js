@@ -486,9 +486,12 @@ async function deleteOwnCalendar(calId) {
   if (MS.isMs(calId)) throw new Error('아웃룩 캘린더는 여기서 삭제할 수 없습니다.');
   const acct = CAL_ACCT.get(calId) || null;
   const c = await gfetch('GET', EP.cal + '/users/me/calendarList/' + enc(calId), undefined, { acct });
-  if (!c || c.primary || c.accessRole !== 'owner' || !String(c.description || '').includes(SHARED_MARK)) throw new Error('공유 캘린더 만들기로 만든 캘린더만 삭제할 수 있습니다.');
-  await gfetch('DELETE', EP.cal + '/calendars/' + enc(calId), undefined, { raw: true, acct });
-  return true;
+  if (!c) throw new Error('캘린더를 찾지 못했습니다.');
+  if (c.primary) throw new Error('기본 캘린더는 삭제할 수 없습니다.');
+  /* 내가 만든(소유한) 캘린더는 삭제, 구독·공유받은 캘린더는 내 목록에서만 뺌 */
+  if (c.accessRole === 'owner') { await gfetch('DELETE', EP.cal + '/calendars/' + enc(calId), undefined, { raw: true, acct }); return 'deleted'; }
+  await gfetch('DELETE', EP.cal + '/users/me/calendarList/' + enc(calId), undefined, { raw: true, acct });
+  return 'removed';
 }
 async function shareCalendar(calId, members) {
   const shared = [], failed = [];
