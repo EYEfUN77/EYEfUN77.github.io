@@ -31,6 +31,12 @@ table.gl td:first-child{white-space:nowrap}
 .faq h3{font-size:1.02rem;margin:18px 0 4px}
 .faq p{margin:0;line-height:1.75;color:var(--text)}
 @media (max-width:560px){.step{padding:16px}.step .n{width:36px;height:36px;font-size:1.05rem}.t-hero h1{font-size:1.45rem}}
+.step.now{border:2px solid #1f5fd1;box-shadow:0 0 0 4px color-mix(in srgb,#1f5fd1 22%,transparent)}
+.step.done{opacity:.6}.step.done .n{background:#0f9d58}
+#nextBar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.15);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;text-align:center;color:var(--text)}
+#nextBar p{margin:0 0 8px;font-weight:700;line-height:1.5;word-break:keep-all}
+#nextBar .go{margin:0;width:100%;max-width:420px;box-sizing:border-box}
+body.hasbar main{padding-bottom:130px}
 </style>
 </head>
 <body>
@@ -56,32 +62,34 @@ table.gl td:first-child{white-space:nowrap}
 
 <p class="tnote" style="text-align:center">아래 버튼은 <b>휴대폰에서</b> 누르는 것이 가장 편합니다. 일부 화면이 영어로 나오는데, 각 단계에 무엇을 누르면 되는지 적어 두었습니다.</p>
 
-<div class="step"><div class="n">1</div><div>
+<div class="step" id="st1"><div class="n">1</div><div>
   <h2>테스터 모임(구글 그룹)에 가입하기</h2>
-  <a class="go" href="https://groups.google.com/g/desktop-calendar-testers" target="_blank" rel="noopener">테스터 모임 열기</a>
+  <a class="go" data-s="1" href="https://groups.google.com/g/desktop-calendar-testers">테스터 모임 열기</a>
   <ol>
     <li>Play 스토어와 <b>같은 Gmail 계정</b>으로 로그인되어 있는지 확인합니다. (오른쪽 위 동그란 프로필)</li>
     <li><span class="en">그룹 가입</span> 또는 <span class="en">Join group</span> 버튼을 누릅니다.</li>
     <li>가입 설정 창이 나오면 그대로 <span class="en">그룹 가입</span> / <span class="en">Join group</span>을 한 번 더 누릅니다.</li>
+    <li>가입이 끝나면 <b>[뒤로 가기]로 이 페이지에 돌아와</b> 2단계로 갑니다.</li>
   </ol>
   <p class="tnote">그룹 가입은 테스트 자격을 얻기 위한 절차입니다. 이 그룹으로 메일이 오가지 않으며, 회원 명단은 개발자만 볼 수 있습니다.</p>
 </div></div>
 
-<div class="step"><div class="n">2</div><div>
+<div class="step" id="st2"><div class="n">2</div><div>
   <h2>테스트 참여 신청하기</h2>
-  <a class="go" href="https://play.google.com/apps/testing/org.eyefun.calendar" target="_blank" rel="noopener">테스트 참여 페이지 열기</a>
+  <a class="go" data-s="2" href="https://play.google.com/apps/testing/org.eyefun.calendar">테스트 참여 페이지 열기</a>
   <ol>
     <li>페이지가 영어로 나와도 괜찮습니다. 파란 버튼 <span class="en">Become a tester</span>(테스터 되기)를 누릅니다.</li>
-    <li><span class="en">You are now a tester</span>(이제 테스터입니다)라는 문구가 나오면 성공입니다.</li>
+    <li><span class="en">You are now a tester</span>(이제 테스터입니다) 또는 '참가 완료'가 나오면 성공입니다.</li>
+    <li><b>휴대폰의 [뒤로 가기]를 눌러 이 안내 페이지로 돌아온 뒤</b>, 아래 3단계의 초록 버튼을 누르세요.</li>
   </ol>
   <p class="tnote">1단계 직후에는 페이지가 아직 준비되지 않았다고 나올 수 있습니다. 1~2분 뒤 새로 고침해 주세요.</p>
 </div></div>
 
-<div class="step"><div class="n">3</div><div>
+<div class="step" id="st3"><div class="n">3</div><div>
   <h2>Play 스토어에서 설치하기</h2>
-  <a class="go alt" href="https://play.google.com/store/apps/details?id=org.eyefun.calendar" target="_blank" rel="noopener">Play 스토어에서 설치</a>
+  <a class="go alt" data-s="3" id="playGo" href="https://play.google.com/store/apps/details?id=org.eyefun.calendar">Play 스토어 앱에서 설치</a>
   <ol>
-    <li>Play 스토어에 <b>바탕화면 달력(iCalendar)</b>이 나오면 <span class="en">설치</span>를 누릅니다.</li>
+    <li>Play 스토어 앱이 열리고 <b>바탕화면 달력(iCalendar)</b>이 나오면 <span class="en">설치</span>를 누릅니다.</li>
     <li>앱을 열고 <b>[Google 계정으로 로그인]</b>을 눌러, 평소 쓰시는 구글 계정을 고르면 내 구글 캘린더가 바로 보입니다.</li>
     <li><b>14일 동안 앱을 지우지 말아 주세요.</b> 그 기간이 지나면 지우셔도 됩니다.</li>
   </ol>
@@ -113,5 +121,36 @@ table.gl td:first-child{white-space:nowrap}
 
 <p class="tnote" style="text-align:center;margin:30px 0 40px">바탕화면 달력(iCalendar) · 개발 김형수 · <a href="./">홈페이지</a></p>
 </main>
+<script>
+/* 안드로이드: Play 스토어 앱을 바로 연다(앱이 없으면 웹 페이지로) */
+(function(){var a=document.getElementById('playGo');if(!a)return;
+if(/Android/i.test(navigator.userAgent)){a.href='intent://details?id=org.eyefun.calendar#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url='+encodeURIComponent('https://play.google.com/store/apps/details?id=org.eyefun.calendar')+';end';}})();
+</script>
+<div id="nextBar"><p id="nbMsg"></p><a class="go" id="nbGo" href="#"></a></div>
+<script>
+/* 단계 이어가기: 버튼을 누른 단계를 기억했다가, 이 페이지로 돌아오면 다음 단계를 바로 띄운다 */
+(function(){
+var K='dcalTestStep',bar=document.getElementById('nextBar'),msg=document.getElementById('nbMsg'),go=document.getElementById('nbGo');
+function get(){try{return +sessionStorage.getItem(K)||+localStorage.getItem(K)||0}catch(e){return 0}}
+function put(n){try{sessionStorage.setItem(K,n);localStorage.setItem(K,n)}catch(e){}}
+var links=[].slice.call(document.querySelectorAll('a.go[data-s]'));
+links.forEach(function(a){a.addEventListener('click',function(){put(+a.dataset.s)})});
+function btn(n){return document.querySelector('a.go[data-s="'+n+'"]')}
+function show(){
+  var d=get();
+  for(var i=1;i<=3;i++){var el=document.getElementById('st'+i);el.classList.toggle('done',i<=d);el.classList.toggle('now',i===d+1)}
+  if(d<1||d>=3){bar.style.display='none';document.body.classList.remove('hasbar');
+    if(d>=3){msg.textContent='';}return}
+  var n=d+1,b=btn(n);
+  msg.textContent=(d===1?'1단계(그룹 가입)를 마치셨나요? 이제 2단계입니다.':'2단계(테스트 참여)를 마치셨나요? 이제 마지막 3단계입니다.');
+  go.textContent=n+'단계: '+b.textContent;go.href=b.href;go.className=b.className;go.onclick=function(){put(n)};
+  bar.style.display='block';document.body.classList.add('hasbar');
+  var st=document.getElementById('st'+n);if(st)st.scrollIntoView({behavior:'smooth',block:'center'});
+}
+window.addEventListener('pageshow',show);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)show()});
+show();
+})();
+</script>
 </body>
 </html>
