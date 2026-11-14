@@ -69,7 +69,7 @@ body.hasbar main{padding-bottom:130px}
     <li>Play 스토어와 <b>같은 Gmail 계정</b>으로 로그인되어 있는지 확인합니다. (오른쪽 위 동그란 프로필)</li>
     <li><span class="en">그룹 가입</span> 또는 <span class="en">Join group</span> 버튼을 누릅니다.</li>
     <li>가입 설정 창이 나오면 그대로 <span class="en">그룹 가입</span> / <span class="en">Join group</span>을 한 번 더 누릅니다.</li>
-    <li>가입이 끝나면 <b>[뒤로 가기]로 이 페이지에 돌아와</b> 2단계로 갑니다.</li>
+    <li>가입이 끝나면 <b>열린 창을 닫거나 [뒤로 가기]</b>를 누르세요. 이 페이지 아래에 2단계 버튼이 바로 나옵니다.</li>
   </ol>
   <p class="tnote">그룹 가입은 테스트 자격을 얻기 위한 절차입니다. 이 그룹으로 메일이 오가지 않으며, 회원 명단은 개발자만 볼 수 있습니다.</p>
 </div></div>
@@ -80,7 +80,7 @@ body.hasbar main{padding-bottom:130px}
   <ol>
     <li>페이지가 영어로 나와도 괜찮습니다. 파란 버튼 <span class="en">Become a tester</span>(테스터 되기)를 누릅니다.</li>
     <li><span class="en">You are now a tester</span>(이제 테스터입니다) 또는 '참가 완료'가 나오면 성공입니다.</li>
-    <li><b>휴대폰의 [뒤로 가기]를 눌러 이 안내 페이지로 돌아온 뒤</b>, 아래 3단계의 초록 버튼을 누르세요.</li>
+    <li><b>열린 창을 닫거나 [뒤로 가기]</b>를 누르세요. 이 페이지 아래에 3단계 버튼이 바로 나옵니다.</li>
   </ol>
   <p class="tnote">1단계 직후에는 페이지가 아직 준비되지 않았다고 나올 수 있습니다. 1~2분 뒤 새로 고침해 주세요.</p>
 </div></div>
@@ -134,7 +134,16 @@ var K='dcalTestStep',bar=document.getElementById('nextBar'),msg=document.getElem
 function get(){try{return +sessionStorage.getItem(K)||+localStorage.getItem(K)||0}catch(e){return 0}}
 function put(n){try{sessionStorage.setItem(K,n);localStorage.setItem(K,n)}catch(e){}}
 var links=[].slice.call(document.querySelectorAll('a.go[data-s]'));
-links.forEach(function(a){a.addEventListener('click',function(){put(+a.dataset.s)})});
+var pw=null,pt=null;
+function openStep(a,n,e){
+  put(n);
+  if(n===3 && /^intent:/.test(a.href)) return;            /* 3단계: Play 스토어 앱으로 바로(뒤로 가기로 돌아옴) */
+  if(e) e.preventDefault();
+  try{ pw=window.open(a.href,'dcalStep','popup=yes,width=480,height=760'); }catch(x){ pw=null; }
+  if(!pw){ location.href=a.href; return; }                 /* 팝업이 막히면 같은 화면에서 */
+  clearInterval(pt); pt=setInterval(function(){ if(!pw||pw.closed){ clearInterval(pt); pw=null; show(); } },700);
+}
+links.forEach(function(a){a.addEventListener('click',function(e){openStep(a,+a.dataset.s,e)})});
 function btn(n){return document.querySelector('a.go[data-s="'+n+'"]')}
 function show(){
   var d=get();
@@ -143,7 +152,7 @@ function show(){
     if(d>=3){msg.textContent='';}return}
   var n=d+1,b=btn(n);
   msg.textContent=(d===1?'1단계(그룹 가입)를 마치셨나요? 이제 2단계입니다.':'2단계(테스트 참여)를 마치셨나요? 이제 마지막 3단계입니다.');
-  go.textContent=n+'단계: '+b.textContent;go.href=b.href;go.className=b.className;go.onclick=function(){put(n)};
+  go.textContent=n+'단계: '+b.textContent;go.href=b.href;go.className=b.className;go.onclick=function(e){openStep(b,n,e)};
   bar.style.display='block';document.body.classList.add('hasbar');
   var st=document.getElementById('st'+n);if(st)st.scrollIntoView({behavior:'smooth',block:'center'});
 }
