@@ -42,11 +42,11 @@ let TOK = null;
 try { TOK = JSON.parse(localStorage.getItem(TK) || 'null'); } catch (e) { TOK = null; }
 function saveTok() { try { if (TOK) localStorage.setItem(TK, JSON.stringify(TOK)); else localStorage.removeItem(TK); } catch (e) {} }
 function returnUrl() { return location.origin + location.pathname.replace(/[^/]*$/, ''); }
-function goAuth(silent, extra) {
+function goAuth(silent) {
   if (!CLIENT_ID) throw new Error('구글 로그인 설정이 아직 끝나지 않았습니다.');
   const state = Math.random().toString(36).slice(2) + Date.now().toString(36);
   try { sessionStorage.setItem('dcal.gstate', state); sessionStorage.setItem('dcal.gsilent', silent ? '1' : ''); } catch (e) {}
-  const p = { client_id: CLIENT_ID, redirect_uri: returnUrl(), response_type: 'token', scope: SCOPES.concat(extra || []).join(' '), state, include_granted_scopes: 'true' };
+  const p = { client_id: CLIENT_ID, redirect_uri: returnUrl(), response_type: 'token', scope: SCOPES.join(' '), state, include_granted_scopes: 'true' };
   if (silent) { p.prompt = 'none'; if (TOK && TOK.email) p.login_hint = TOK.email; }
   else p.prompt = 'select_account consent';
   location.href = EP.auth + '?' + Object.keys(p).map(k => encodeURIComponent(k) + '=' + encodeURIComponent(p[k])).join('&');
@@ -94,7 +94,6 @@ async function finishAuth(hash) {
   }
   const scope = String(p.scope || '');
   TOK = Object.assign(TOK || {}, { access_token: p.access_token, expires_at: Date.now() + (+p.expires_in || 3600) * 1000 });
-  if (scope) TOK.scope = scope;
   try { sessionStorage.removeItem('dcal.gnoretry'); } catch (e) {}
   const r = await fetch(EP.userinfo, { headers: { Authorization: 'Bearer ' + TOK.access_token } });
   const me = await r.json().catch(() => ({}));
@@ -700,102 +699,6 @@ async function importSettings(p) {
   await persist(); return Object.keys(s);
 }
 
-/* ================= 명함 등록·명함첩 (구글 주소록에 저장, 명함 사진은 내 드라이브) =================
-   글자 인식은 개발자 서버(Apps Script)가 AI로 처리하고 사진은 저장하지 않습니다. 1단계: 허용된 계정만. */
-const CONTACTS_SCOPE = 'https://www.googleapis.com/auth/contacts';
-const PEOPLE = 'https://people.googleapis.com/v1';
-const CARD_GROUP = '명함(바탕화면 달력)', CARD_FOLDER = '바탕화면 달력 명함';
-const hasContacts = () => !!(TOK && TOK.scope && TOK.scope.indexOf('auth/contacts') >= 0);
-function grantContacts() { try { sessionStorage.removeItem('dcal.gnoretry'); } catch (e) {} return goAuth(false, [CONTACTS_SCOPE]); }
-async function cardServer(action, extra) {
-  const api = (window.CAL_CONFIG && window.CAL_CONFIG.apiUrl) || '';
-  if (!api) throw new Error('서버 주소가 없습니다.');
-  const tok = await accessToken();
-  const r = await fetch(api, { method: 'POST', redirect: 'follow', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(Object.assign({ action, gtok: tok }, extra || {})) });
-  const j = await r.json().catch(() => ({ ok: false, error: '서버 응답을 읽지 못했습니다.' }));
-  if (!j.ok) throw new Error(j.error || '요청 실패');
-  return j.data;
-}
-let CG_ID = null, CF_ID = null;
-async function cardGroup() {
-  if (CG_ID) return CG_ID;
-  const l = await gfetch('GET', PEOPLE + '/contactGroups?pageSize=200&groupFields=name');
-  const g = (l.contactGroups || []).find(x => x.name === CARD_GROUP || x.formattedName === CARD_GROUP);
-  if (g) return (CG_ID = g.resourceName);
-  const c = await gfetch('POST', PEOPLE + '/contactGroups', { contactGroup: { name: CARD_GROUP } });
-  return (CG_ID = c.resourceName);
-}
-async function cardFolder() {
-  if (CF_ID) return CF_ID;
-  const l = await gfetch('GET', EP.drive + '/files' + q({ q: "mimeType='application/vnd.google-apps.folder' and name='" + CARD_FOLDER + "' and trashed=false", fields: 'files(id)' }));
-  if (l.files && l.files[0]) return (CF_ID = l.files[0].id);
-  const f = await gfetch('POST', EP.drive + '/files?fields=id', { name: CARD_FOLDER, mimeType: 'application/vnd.google-apps.folder' });
-  return (CF_ID = f.id);
-}
-const PF = 'names,organizations,phoneNumbers,emailAddresses,addresses,urls,biographies,memberships';
-function mapPerson(x) {
-  const ph = x.phoneNumbers || [], pick = t => (ph.find(v => v.type === t) || {}).value || '';
-  const org = (x.organizations || [])[0] || {}, urls = x.urls || [];
-  const cardUrls = urls.filter(u => /명함/.test(u.type || u.formattedType || '')).map(u => u.value);
-  return {
-    id: x.resourceName, etag: x.etag,
-    name: ((x.names || [])[0] || {}).displayName || ((x.names || [])[0] || {}).unstructuredName || '',
-    company: org.name || '', department: org.department || '', title: org.title || '',
-    mobile: pick('mobile') || ((ph.find(v => /^01/.test((v.value || '').replace(/\D/g, ''))) || {}).value || ''),
-    phone: pick('work') || pick('main') || '', fax: pick('workFax') || '',
-    email: ((x.emailAddresses || [])[0] || {}).value || '',
-    address: ((x.addresses || [])[0] || {}).formattedValue || '',
-    website: (urls.find(u => !/명함/.test(u.type || u.formattedType || '')) || {}).value || '',
-    memo: ((x.biographies || [])[0] || {}).value || '',
-    cards: cardUrls
-  };
-}
-async function cardList() {
-  if (!hasContacts()) return { need: true, list: [] };
-  const gid = await cardGroup();
-  const g = await gfetch('GET', PEOPLE + '/' + gid + '?maxMembers=2000');
-  const ids = g.memberResourceNames || [], out = [];
-  for (let i = 0; i < ids.length; i += 200) {
-    const b = await gfetch('GET', PEOPLE + '/people:batchGet?personFields=' + PF + '&' + ids.slice(i, i + 200).map(r => 'resourceNames=' + encodeURIComponent(r)).join('&'));
-    (b.responses || []).forEach(r => { if (r.person) out.push(mapPerson(r.person)); });
-  }
-  return { need: false, list: out };
-}
-async function cardSave(p) {
-  if (!hasContacts()) throw new Error('NEED_CONTACTS');
-  const c = p.card || {}, gid = await cardGroup();
-  const urls = [];
-  if (c.website) urls.push({ value: String(c.website), type: 'work' });
-  (c.cards || []).forEach(u => urls.push({ value: String(u), type: '명함 사진' }));
-  const imgs = (p.images || []).slice(0, 2);
-  if (imgs.length) {
-    const folder = await cardFolder(), d = new Date();
-    const stamp = d.getFullYear() + String(d.getMonth() + 1).padStart(2, '0') + String(d.getDate()).padStart(2, '0');
-    for (let i = 0; i < imgs.length; i++) {
-      const nm = (stamp + '_' + (c.name || '명함') + (c.company ? '_' + c.company : '') + (imgs.length > 1 ? '_' + (i ? '뒷면' : '앞면') : '')).replace(/[\\/:*?"<>|]/g, '_').slice(0, 100) + '.jpg';
-      const f = await multipart({ name: nm, parents: [folder], mimeType: 'image/jpeg' }, Buffer.from(String(imgs[i]).replace(/^data:image\/\w+;base64,/, ''), 'base64'), 'image/jpeg');
-      urls.push({ value: 'https://drive.google.com/open?id=' + f.id, type: '명함 사진' });
-    }
-  }
-  const person = {
-    names: c.name ? [{ unstructuredName: String(c.name) }] : [],
-    organizations: (c.company || c.department || c.title) ? [{ name: c.company || '', department: c.department || '', title: c.title || '', type: 'work' }] : [],
-    phoneNumbers: [['mobile', c.mobile], ['work', c.phone], ['workFax', c.fax]].filter(v => v[1]).map(v => ({ value: String(v[1]), type: v[0] })),
-    emailAddresses: c.email ? [{ value: String(c.email), type: 'work' }] : [],
-    addresses: c.address ? [{ formattedValue: String(c.address), type: 'work' }] : [],
-    urls, biographies: c.memo ? [{ value: String(c.memo), contentType: 'TEXT_PLAIN' }] : []
-  };
-  let res;
-  if (p.id) {
-    person.etag = p.etag;
-    res = await gfetch('PATCH', PEOPLE + '/' + p.id + ':updateContact?updatePersonFields=names,organizations,phoneNumbers,emailAddresses,addresses,urls,biographies&personFields=' + PF, person);
-  } else {
-    person.memberships = [{ contactGroupMembership: { contactGroupResourceName: gid } }];
-    res = await gfetch('POST', PEOPLE + '/people:createContact?personFields=' + PF, person);
-  }
-  return mapPerson(res);
-}
-
 /* ================= 화면에서 오는 요청 처리 ================= */
 const ok = data => ({ ok: true, data });
 async function handle(action, p) {
@@ -833,10 +736,6 @@ async function handle(action, p) {
       case 'accounts': return ok({ list: [{ email: TOK && TOK.email, name: TOK && TOK.name, primary: true, type: 'google' }], ms: false, web: true });
       case 'addAccount': case 'addMsAccount': throw new Error('다른 계정 추가는 PC 앱에서 할 수 있습니다.');
       case 'removeAccount': return ok(true);
-      case 'cardInfo': { const i = await cardServer('cardInfo'); i.contacts = hasContacts(); return ok(i); }
-      case 'cardRead': return ok(await cardServer('cardRead', { images: p.images }));
-      case 'cardList': return ok(await cardList());
-      case 'cardSave': return ok(await cardSave(p));
     }
     return { ok: false, error: '알 수 없는 요청입니다.' };
   } catch (e) {
@@ -847,7 +746,7 @@ async function handle(action, p) {
 function state() { return { email: TOK && TOK.email && (TOK.access_token || !sessionStorage.getItem('dcal.gnoretry')) ? TOK.email : '', name: (TOK && TOK.name) || '' }; }
 window.dcalApp = {
   web: true,
-  g: { call: (a, p) => handle(a, p), signIn, signOut, state: () => Promise.resolve(state()), finishAuth, grantContacts, hasContacts },
+  g: { call: (a, p) => handle(a, p), signIn, signOut, state: () => Promise.resolve(state()), finishAuth },
   openExternal: u => { window.open(u, '_blank', 'noopener'); return Promise.resolve(); }
 };
 })();
