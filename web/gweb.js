@@ -424,7 +424,7 @@ async function createEvent(ev) {
   if (MS.isMs(ev.calendarId)) return MS.createEvent(ev);
   const res = applyTimes({ summary: ev.title, location: ev.location || '', description: ev.description || '' }, ev);
   await applyStyle(res, ev); applyFiles(res, ev); applyPhotos(res, ev); applyReminders(res, ev);
-  if (ev.recurrence && ev.recurrence.length) res.recurrence = ev.recurrence.filter(x => /^RRULE:/.test(x));
+  if (ev.recurrence && ev.recurrence.length) res.recurrence = ev.recurrence.filter(x => /^(RRULE|EXDATE)[:;]/.test(x));
   const r = await gfetch('POST', EP.cal + '/calendars/' + enc(ev.calendarId) + '/events?supportsAttachments=true', res);
   return r.id;
 }
