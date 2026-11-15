@@ -13,14 +13,18 @@
 <link rel="apple-touch-icon" href="icon-180.png">
 <style>
 html,body{margin:0;height:100%;background:#1f5fd1}
-#ld{position:fixed;inset:0;background:#1f5fd1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#fff;font:600 16px/1.5 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;text-align:center;padding:0 24px}
-#ld img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+/* 휴대폰 앱이 켜질 때 안드로이드가 먼저 보여 주는 첫 화면(파란 바탕 + 가운데 큰 아이콘)과 똑같이 맞춤 → 화면이 바뀌어도 덜컹거리지 않음 */
+#ld{position:fixed;inset:0;background:#1f5fd1;display:flex;align-items:center;justify-content:center;color:#fff;font:600 16px/1.5 'Apple SD Gothic Neo','Noto Sans KR',sans-serif;text-align:center}
+#ld img{width:300px;max-width:80vw;height:auto;display:block}
+#msg{position:absolute;left:24px;right:24px;top:calc(50% + min(150px,40vw) + 18px);opacity:0;animation:msgIn .3s ease 1.2s forwards}
+#msg.now{animation:none;opacity:1}
+@keyframes msgIn{to{opacity:1}}
 #ld small{font-weight:500;opacity:.85}
 #ld button{margin-top:6px;border:0;border-radius:999px;padding:10px 20px;font:700 15px inherit;background:#fff;color:#1f5fd1}
 </style>
 </head>
 <body>
-<div id="ld"><img src="icon-192.png" alt=""><div id="msg">바탕화면 달력 불러오는 중…</div></div>
+<div id="ld"><img src="splash.png" alt=""><div id="msg">바탕화면 달력 불러오는 중…</div></div>
 <script>
 /* 바탕화면 달력 — 휴대폰 앱 껍데기
    달력 화면을 휴대폰에 저장해 두고 그것으로 실행합니다. 인터넷이 없으면 저장된 화면과
@@ -40,17 +44,22 @@ function getJson(action, ms){
   return withTimeout(fetch(API+'?action='+action+'&t='+Date.now(),{ redirect:'follow', cache:'no-store' }).then(function(r){ return r.json(); }), ms)
     .then(function(j){ if(!j || !j.ok) throw new Error((j&&j.error)||'서버 응답 오류'); return j.data; });
 }
+var BOOT_HEAD="<style>html{background:#1f5fd1}#dcalBoot{position:fixed;inset:0;z-index:2147483647;background:#1f5fd1;display:flex;align-items:center;justify-content:center;transition:opacity .28s ease;pointer-events:none}#dcalBoot img{width:300px;max-width:80vw;height:auto;display:block}</style><script>(function(){var gone=false;function go(){if(gone)return;gone=true;var o=document.getElementById('dcalBoot');if(!o)return;requestAnimationFrame(function(){requestAnimationFrame(function(){o.style.opacity='0';setTimeout(function(){if(o.parentNode)o.parentNode.removeChild(o);document.documentElement.style.background='';},320);});});}function chk(){if(document.readyState!=='loading'&&document.querySelector('.widget'))go();else if(!gone)setTimeout(chk,30);}document.addEventListener('DOMContentLoaded',chk);setTimeout(chk,30);setTimeout(go,4000);})();<\/script>";
+var BOOT_BODY="<div id=\"dcalBoot\"><img src=\"splash.png\" alt=\"\"></div>";
+/* 화면·구글 연결 코드의 새 버전은 달력이 뜬 뒤 뒤에서 받아 두었다가 다음에 열 때 적용(시작할 때 기다리지 않음) */
+function BG_UPDATE(){ return '<script>(function(){var API='+JSON.stringify(API)+',CK='+JSON.stringify(CK)+';function ok(u){return !!(u&&u.html&&String(u.html).length>30000&&String(u.html).indexOf("/*__CONFIG__*/")>=0);}function j(a){return fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow",cache:"no-store"}).then(function(r){return r.json();}).then(function(x){if(!x||!x.ok)throw 0;return x.data;});}setTimeout(function(){if(navigator.onLine===false)return;j("uiVersion").then(function(v){var c=null;try{c=JSON.parse(localStorage.getItem(CK)||"null");}catch(e){}if(!v||!v.id||(c&&c.id===v.id))return;return j("ui").then(function(u){if(ok(u))try{localStorage.setItem(CK,JSON.stringify({id:u.id||"",html:u.html}));}catch(e){}});}).catch(function(){});},5000);})();<\/script>'; }
 var PWA_HEAD='<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1f5fd1"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="바탕화면 달력"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="icon-180.png">';
 function show(ui){
   var inject='window.CAL_CONFIG='+JSON.stringify({ apiUrl:API })+';window.CAL_PWA=true;window.CAL_UI_ID='+JSON.stringify(ui.id||'')+';';
   var html=String(ui.html).replace('/*__CONFIG__*/', inject);
   /* 달력 화면으로 바꿔 쓸 때 설치 정보(manifest)가 사라지지 않게 다시 넣음 — 없으면 크롬이 '설치할 수 없음'으로 판단 */
-  html=html.replace(/<head[^>]*>/i, function(m){ return m+PWA_HEAD; });
+  html=html.replace(/<head[^>]*>/i, function(m){ return m+PWA_HEAD+BOOT_HEAD+BG_UPDATE(); });
+  html=html.replace(/<body[^>]*>/i, function(m){ return m+BOOT_BODY; });
   document.open(); document.write(html); document.close();
 }
 if(EN){ try{ document.getElementById('msg').textContent='Loading Desktop Calendar…'; document.title='Desktop Calendar'; }catch(e){} }
 function fail(e){
-  $('msg').innerHTML=(EN?'Could not load the calendar.':'달력을 불러오지 못했습니다.')+'<br><small>'+String((e&&e.message)||e).replace(/</g,'&lt;')+'<br>'+(EN?'Open it once with an internet connection first.':'처음 한 번은 인터넷이 연결된 상태에서 열어야 합니다.')+'</small><br><button onclick="location.reload()">'+(EN?'Try again':'다시 시도')+'</button>';
+  $('msg').className='now'; $('msg').innerHTML=(EN?'Could not load the calendar.':'달력을 불러오지 못했습니다.')+'<br><small>'+String((e&&e.message)||e).replace(/</g,'&lt;')+'<br>'+(EN?'Open it once with an internet connection first.':'처음 한 번은 인터넷이 연결된 상태에서 열어야 합니다.')+'</small><br><button onclick="location.reload()">'+(EN?'Try again':'다시 시도')+'</button>';
 }
 
 /* 예전 앱(구글 화면을 감싸던 방식)에서 쓰던 로그인을 한 번만 이어받기 */
@@ -75,7 +84,7 @@ function handoff(){
 
 function start(){
   var cached=getCache();
-  if(cached && !navigator.onLine) return show(cached);          /* 비행기 모드 등: 저장된 화면으로 바로 */
+  if(cached && (!navigator.onLine || hasToken())) return show(cached);   /* 저장된 화면으로 바로 시작(새 버전은 뒤에서 받아 둠) */
   handoff().then(function(){
     /* 저장된 화면이 최신인지 짧게 확인(느린 와이파이면 저장된 화면 사용) */
     return getJson('uiVersion', 3500).then(function(v){
