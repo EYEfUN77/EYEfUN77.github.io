@@ -18,7 +18,7 @@
 <section id="ko" style="border-top:0">
 <h1>개인정보처리방침</h1>
 <p>시행일: 2026년 11월 15일</p>
-<p>바탕화면 달력(영문명 Desktop Calendar, 이하 "앱")은 개인 개발자 김형수(이하 "개발자")가 만든 Windows용 달력 앱입니다. 이 방침은 앱이 어떤 정보를 어떻게 사용하고 보관하는지 설명합니다.</p>
+<p>바탕화면 달력(영문명 Desktop Calendar, 이하 "앱")은 개인 개발자 김형수(이하 "개발자")가 만든 달력 앱으로, Windows용 PC 앱과 안드로이드 휴대폰 앱·웹 버전이 있습니다. 이 방침은 앱이 어떤 정보를 어떻게 사용하고 보관하는지 설명합니다.</p>
 
 <div class="note"><b>요약</b> — 앱은 사용자가 허용한 구글 계정 정보(캘린더, 할 일, 앱이 만든 드라이브 파일, 앱 설정)를 <b>사용자의 PC에서 구글 서버와 직접 주고받을 뿐</b>, 개발자의 서버로 보내거나 저장하지 않습니다. 정보를 판매하거나 광고·AI 학습에 쓰지 않습니다.</div>
 
@@ -30,7 +30,7 @@
 <tr><td>구글 캘린더의 캘린더 목록과 일정<br><code>https://www.googleapis.com/auth/calendar</code></td><td>일정을 달력에 표시합니다. 사용자가 요청할 때만 일정을 추가·수정·삭제하고, 반복 일정의 기간·범위를 바꾸고, 새 캘린더를 만들어 사용자가 적은 이메일 주소에 공유(초대)합니다.</td></tr>
 <tr><td>구글 할 일<br><code>https://www.googleapis.com/auth/tasks</code></td><td>할 일을 달력에 표시하고, 사용자가 요청할 때 할 일을 추가·완료·삭제합니다.</td></tr>
 <tr><td>앱이 만든 구글 드라이브 파일<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>사용자가 일정에 첨부한 사진과 문서(PDF·엑셀·한글 등)를 사용자의 드라이브 "바탕화면 달력 첨부사진"·"바탕화면 달력 첨부파일" 폴더에 올리고 보여 줍니다. 분류·색 같은 설정을 휴대폰과 맞추는 "바탕화면 달력 설정.json" 파일도 이 권한으로 만듭니다. 앱이 만들지 않은 파일에는 접근하지 않습니다.</td></tr>
-<tr><td>구글 드라이브 앱 설정 공간<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>분류·색, 학기 주차, 스티커, 일정 틀 같은 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
+<tr><td>구글 드라이브 앱 설정 공간<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>분류·색, 주차 표시 기간, 스티커, 일정 틀, 주차 위치 기록 같은 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
 </table>
 <p>앱은 위 목적 외에 구글 사용자 데이터를 사용하지 않습니다. 사람(개발자 포함)이 사용자의 구글 데이터를 열람하지 않습니다. 다만 사용자가 오류 확인을 위해 직접 동의한 경우, 보안 사고 조사, 법령 준수에 필요한 경우는 예외입니다.</p>
 
@@ -39,12 +39,15 @@
 
 <h3>구글 데이터가 아닌 정보</h3>
 <ul>
-<li><b>날씨용 위치</b>: 날씨 표시를 켜 두면, Windows 위치 서비스에서 받은 대략적인 위도·경도를 날씨 서비스(Open-Meteo, open-meteo.com)에 보내 오늘 날씨를 받아 옵니다. 위치를 허용하지 않으면 울산 날씨를 보여 줍니다. 날씨 표시는 설정에서 끌 수 있습니다.</li>
+<li><b>날씨용 위치</b>: 날씨 표시를 켜 두면, Windows 위치 서비스(휴대폰에서는 휴대폰 위치)에서 받은 대략적인 위도·경도를 날씨 서비스(Open-Meteo, open-meteo.com)에 보내 오늘 날씨를 받아 옵니다. 위치를 허용하지 않으면 울산 날씨를 보여 줍니다. 날씨 표시는 설정에서 끌 수 있습니다.</li>
 <li><b>장소 검색</b>: 일정의 장소 칸에서 검색하면, 사용자가 입력한 검색어만 개발자의 구글 Apps Script 웹 앱을 거쳐 카카오 로컬 API(카카오맵)로 보내 장소 이름·주소·좌표를 받아 옵니다. 검색어 외의 계정·일정 정보는 보내지 않으며, 같은 검색어의 결과를 빠르게 보여 주기 위해 최대 6시간 임시 보관한 뒤 지웁니다.</li>
 <li><b>길안내(내비게이션)</b>: 🚗 길안내 버튼을 누르면 해당 장소의 이름과 좌표를 사용자가 고른 지도·내비 앱(카카오내비, 카카오맵, 네이버 지도, 티맵, 구글 지도)이나 휴대폰 공유 기능(테슬라 앱 등)으로 넘깁니다. 이후 처리는 각 앱의 개인정보처리방침을 따릅니다.</li>
 <li><b>외부 달력 구독</b>: 사용자가 웹 달력 주소(ICS·webcal)를 추가하면, PC 앱은 그 주소에서 달력 파일을 직접 받고, 웹·휴대폰 버전은 개발자의 구글 Apps Script 웹 앱을 거쳐 받습니다(최대 30분 임시 보관). 받은 일정은 사용자 기기에만 저장되며, 구독 주소 목록은 사용자 구글 드라이브의 앱 설정에 저장됩니다.</li>
 <li><b>다른 구글 계정 함께 보기(PC 앱)</b>: 사용자가 계정을 추가하면 그 계정의 캘린더 권한만 요청하며, 인증 토큰은 기본 계정과 같은 방식으로 암호화해 사용자의 PC에만 보관합니다. 계정을 빼거나 로그아웃하면 토큰을 지우고 구글에 폐기를 요청합니다.</li>
 <li><b>화면 파일 내려받기</b>: 앱은 실행할 때 개발자의 구글 Apps Script 웹 앱에서 최신 달력 화면 파일을 내려받습니다. 이 요청에는 사용자의 계정이나 일정 정보가 들어가지 않습니다.</li>
+<li><b>차량 주차 위치 기록(휴대폰)</b>: 사용자가 [차량 주차 위치 입력]을 누를 때만 휴대폰의 정밀 위치(GPS 좌표)를 한 번 받아 옵니다. 좌표만 개발자의 구글 Apps Script 웹 앱을 거쳐 카카오 로컬 API로 보내 아파트·건물 이름과 주소를 받아 오며(계정·일정 정보는 보내지 않음), 같은 위치의 결과를 빠르게 보여 주기 위해 최대 6시간 임시 보관한 뒤 지웁니다. 저장한 주차 기록(좌표·주소·메모·시각, 최근 20건)은 사용자 기기와 사용자 구글 드라이브의 앱 설정에, 함께 찍은 사진은 드라이브 "바탕화면 달력 첨부사진" 폴더에 저장됩니다. [길찾기]·[지도]를 누르면 주차 위치의 이름과 좌표를 네이버 지도 또는 카카오맵으로 넘깁니다. 주차 기록은 ⚙ 설정 → 주차 위치 기록에서 한 건씩 또는 [모두 삭제]로 지울 수 있습니다.</li>
+<li><b>음성 입력(휴대폰)</b>: 🎤를 누른 동안에만 마이크를 사용합니다. 말소리는 휴대폰 브라우저(Chrome)에 들어 있는 음성 인식 기능(구글 제공)이 글자로 바꾸며, 앱과 개발자는 음성을 받거나 저장하지 않습니다. 바뀐 글자만 입력 칸에 들어갑니다.</li>
+<li><b>카메라</b>: 사진 첨부나 주차 사진을 찍을 때만, 사용자가 찍거나 고른 사진만 사용합니다.</li>
 <li>앱은 사용 통계, 광고 식별자, 쿠키 추적을 수집하지 않습니다.</li>
 </ul>
 
@@ -90,7 +93,7 @@
 <section id="en">
 <h1><span class="lang">EN</span>Privacy Policy</h1>
 <p>Effective date: November 15, 2026</p>
-<p>Desktop Calendar (Korean name: 바탕화면 달력, the "App") is a Windows calendar app developed by an individual developer, Kim Hyeong-su (the "Developer"). This policy explains what information the App uses and how.</p>
+<p>Desktop Calendar (Korean name: 바탕화면 달력, the "App") is a calendar app for Windows PCs, Android phones and the web, developed by an individual developer, Kim Hyeong-su (the "Developer"). This policy explains what information the App uses and how.</p>
 
 <div class="note"><b>Summary</b> — The App exchanges the Google data you authorize (calendar, tasks, Drive files the App created, app settings) <b>directly between your PC and Google's servers</b>. It is never sent to or stored on the Developer's servers, never sold, and never used for advertising or AI training.</div>
 
@@ -102,7 +105,7 @@
 <tr><td>Google Calendar calendars and events<br><code>https://www.googleapis.com/auth/calendar</code></td><td>Display your events on the desktop calendar. Only at your request: create, edit and delete events; change the period or scope of recurring events; create a new calendar and share it with email addresses you enter.</td></tr>
 <tr><td>Google Tasks<br><code>https://www.googleapis.com/auth/tasks</code></td><td>Display your tasks and, at your request, add, complete or delete tasks.</td></tr>
 <tr><td>Google Drive files created by the App<br><code>https://www.googleapis.com/auth/drive.file</code></td><td>Upload and show photos and documents (PDF, Excel, Hangul, etc.) you attach to events, stored in "바탕화면 달력 첨부사진" / "바탕화면 달력 첨부파일" folders in your Drive, and keep a "바탕화면 달력 설정.json" settings file so your phone and PC share the same categories and colors. The App cannot access Drive files it did not create.</td></tr>
-<tr><td>Google Drive app data folder<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>Store your app settings (categories, colors, semester weeks, stickers, templates) in the hidden app-specific folder so they are available on your other PCs.</td></tr>
+<tr><td>Google Drive app data folder<br><code>https://www.googleapis.com/auth/drive.appdata</code></td><td>Store your app settings (categories, colors, week-number periods, stickers, templates, parking records) in the hidden app-specific folder so they are available on your other PCs.</td></tr>
 </table>
 <p>Google user data is used only for these user-facing features. No human, including the Developer, reads your Google data, except with your explicit consent for troubleshooting, for security purposes, or to comply with applicable law.</p>
 
@@ -111,10 +114,13 @@
 
 <h3>Non-Google information</h3>
 <ul>
-<li><b>Location for weather</b>: if the weather display is on, approximate latitude/longitude from Windows location services is sent to Open-Meteo (open-meteo.com) to get today's forecast. If location is not allowed, a default city (Ulsan, Korea) is used. You can turn the weather display off in settings.</li>
+<li><b>Location for weather</b>: if the weather display is on, approximate latitude/longitude from Windows location services (on phones, the phone's location) is sent to Open-Meteo (open-meteo.com) to get today's forecast. If location is not allowed, a default city (Ulsan, Korea) is used. You can turn the weather display off in settings.</li>
 <li><b>Interface file download</b>: on start, the App downloads the latest calendar interface file from the Developer's Google Apps Script web app. This request contains no account or calendar data.</li>
 <li><b>Web calendar subscriptions</b>: when you add a web calendar (ICS/webcal) address, the PC app downloads it directly, and the web/mobile version downloads it through the Developer's Google Apps Script web app (cached for up to 30 minutes). Events are stored only on your device; the list of subscriptions is saved in the app settings in your Google Drive.</li>
 <li><b>Additional Google accounts (PC app)</b>: when you add another account, the App requests only calendar access for it and keeps its token encrypted on your PC. Removing the account or signing out deletes the token and asks Google to revoke it.</li>
+<li><b>Car parking spot (phone)</b>: only when you tap [Car parking spot], the App reads your phone's precise location (GPS coordinates) once. Only the coordinates are sent through the Developer's Google Apps Script web app to the Kakao Local API to get the apartment or building name and address (no account or calendar data), and the result for the same location is cached for up to 6 hours. Saved parking records (coordinates, address, note, time; latest 20) are stored on your device and in the app settings in your Google Drive, and photos in the "바탕화면 달력 첨부사진" folder. Tapping [Directions] or [Map] passes the spot's name and coordinates to Naver Map or Kakao Map. Delete records one by one or with [Delete all] in ⚙ Settings → Parking spot.</li>
+<li><b>Voice input (phone)</b>: the microphone is used only while 🎤 is on. Speech is turned into text by the speech recognition built into your phone's browser (Chrome, provided by Google); the App and the Developer never receive or store your voice. Only the resulting text goes into the input box.</li>
+<li><b>Camera</b>: used only when you take or choose a photo to attach or for a parking spot.</li>
 <li>The App does not collect analytics, advertising IDs or tracking cookies.</li>
 </ul>
 
