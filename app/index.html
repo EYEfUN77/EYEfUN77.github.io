@@ -52,11 +52,14 @@ function getJson(action, ms){
 function BG_UPDATE(){ return '<script>(function(){var API='+JSON.stringify(API)+',CK='+JSON.stringify(CK)+';function ok(u){return !!(u&&u.html&&String(u.html).length>30000&&String(u.html).indexOf("/*__CONFIG__*/")>=0);}function j(a){return fetch(API+"?action="+a+"&t="+Date.now(),{redirect:"follow",cache:"no-store"}).then(function(r){return r.json();}).then(function(x){if(!x||!x.ok)throw 0;return x.data;});}setTimeout(function(){if(navigator.onLine===false)return;j("uiVersion").then(function(v){var c=null;try{c=JSON.parse(localStorage.getItem(CK)||"null");}catch(e){}if(!v||!v.id||(c&&c.id===v.id))return;return j("ui").then(function(u){if(ok(u))try{localStorage.setItem(CK,JSON.stringify({id:u.id||"",html:u.html}));}catch(e){}});}).catch(function(){});},5000);})();<\/script>'; }
 var PWA_HEAD='<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#1f5fd1"><meta name="mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="바탕화면 달력"><link rel="icon" type="image/png" sizes="192x192" href="icon-192.png"><link rel="apple-touch-icon" href="icon-180.png">';
 function show(ui){
-  var hw=(window.__twaHold||0)-performance.now(); if(hw>30){ var a=arguments; return setTimeout(function(){ show.apply(null,a); }, hw); }
+  /* 휴대폰 앱: 로고를 2초쯤 보여 주는 동안에도 달력은 뒤에서 미리 열어 일정 동기화를 시작함(로고는 위에 덮어 두었다가 걷어냄) */
+  var hw=Math.round((window.__twaHold||0)-performance.now()), splash='';
+  if(hw>30){ var im=document.querySelector('#ld img'); splash='<div id="dcalSplash" style="position:fixed;inset:0;z-index:2147483647;background:#1f5fd1"><img alt="" decoding="sync" src="'+(im?im.src:'')+'" style="position:fixed;left:50%;top:calc(50% + 1vw);width:78.15vw;max-width:none;height:auto;transform:translate(-50%,-50%)"></div><script>setTimeout(function(){var e=document.getElementById("dcalSplash");if(e)e.remove();},'+hw+')<\/script>'; }
   var inject='window.CAL_CONFIG='+JSON.stringify({ apiUrl:API })+';window.CAL_PWA=true;window.CAL_UI_ID='+JSON.stringify(ui.id||'')+';';
   var html=String(ui.html).replace('/*__CONFIG__*/', inject);
   /* 달력 화면으로 바꿔 쓸 때 설치 정보(manifest)가 사라지지 않게 다시 넣음 — 없으면 크롬이 '설치할 수 없음'으로 판단 */
   html=html.replace(/<head[^>]*>/i, function(m){ return m+PWA_HEAD+'<style>html{background:#1f5fd1}</style>'+BG_UPDATE(); });
+  if(splash) html=html.replace(/<body[^>]*>/i, function(m){ return m+splash; });
   document.open(); document.write(html); document.close();
 }
 if(EN){ try{ document.getElementById('msg').textContent='Loading Desktop Calendar…'; document.title='Desktop Calendar'; }catch(e){} }
