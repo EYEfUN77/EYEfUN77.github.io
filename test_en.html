@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Become a phone app tester – Desktop Calendar (iCalendar)</title>
+<meta name="description" content="Join the closed test of the Desktop Calendar Android app. Three steps, about five minutes.">
+<link rel="icon" href="icon.png">
+<link rel="stylesheet" href="style.css">
+<style>
+.t-wrap{max-width:760px;margin:0 auto;padding:0 16px}
+.t-hero{text-align:center;padding:36px 0 10px}
+.t-hero img{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(20,60,160,.25)}
+.t-hero h1{font-size:1.75rem;margin:18px 0 8px;line-height:1.35;color:var(--text)}
+.t-hero p{color:var(--text);line-height:1.75;margin:0}
+.t-hero p b,.t-box b{color:var(--accent)}
+.t-box{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:18px 20px;margin:22px 0;line-height:1.8;color:var(--text)}
+.step{display:flex;gap:16px;align-items:flex-start;background:var(--card);border:1px solid var(--line);border-radius:18px;padding:20px;margin:16px 0;box-shadow:0 2px 10px rgba(20,40,80,.06)}
+.step .n{flex:none;width:44px;height:44px;border-radius:50%;background:#1f5fd1;color:#fff;font-weight:800;font-size:1.25rem;display:flex;align-items:center;justify-content:center}
+.step h2{font-size:1.2rem;margin:4px 0 8px;border:0;padding:0;color:var(--text)}
+.step p,.step li{line-height:1.75;color:var(--text)}
+.step ol,.step ul{padding-left:1.2rem;margin:6px 0}
+.go{display:inline-block;margin:10px 0 6px;background:#1f5fd1;color:#fff !important;text-decoration:none;font-weight:700;padding:12px 20px;border-radius:12px;font-size:1.02rem}
+.go.alt{background:#0f9d58}
+.en{display:inline-block;background:color-mix(in srgb,var(--accent) 14%,transparent);border:1px solid color-mix(in srgb,var(--accent) 35%,transparent);color:var(--text);border-radius:6px;padding:0 6px;font-family:Arial,sans-serif;font-size:.92em}
+.tnote{font-size:.93rem;color:var(--muted)}
+table.gl{width:100%;border-collapse:collapse;margin:8px 0;font-size:.95rem}
+table.gl td{border-bottom:1px solid var(--line);padding:8px 6px;vertical-align:top;color:var(--text)}
+table.gl td:first-child{white-space:nowrap}
+.faq h2,.faq h3{color:var(--text)}
+.faq h3{font-size:1.02rem;margin:18px 0 4px}
+.faq p{margin:0;line-height:1.75;color:var(--text)}
+@media (max-width:560px){.step{padding:16px}.step .n{width:36px;height:36px;font-size:1.05rem}.t-hero h1{font-size:1.45rem}}
+.step.now{border:2px solid #1f5fd1;box-shadow:0 0 0 4px color-mix(in srgb,#1f5fd1 22%,transparent)}
+.step.done{opacity:.6}.step.done .n{background:#0f9d58}
+#nextBar{position:fixed;left:0;right:0;bottom:0;z-index:50;background:var(--card);border-top:1px solid var(--line);box-shadow:0 -4px 16px rgba(0,0,0,.15);padding:12px 16px calc(12px + env(safe-area-inset-bottom));display:none;text-align:center;color:var(--text)}
+#nextBar p{margin:0 0 8px;font-weight:700;line-height:1.5;word-break:keep-all}
+#nextBar .go{margin:0;width:100%;max-width:420px;box-sizing:border-box}
+body.hasbar main{padding-bottom:130px}
+</style>
+</head>
+<body>
+<header class="top"><div class="wrap">
+  <a class="brand" href="en.html"><img src="icon.png" alt="">Desktop Calendar (iCalendar)</a>
+</div></header>
+
+<main class="t-wrap">
+<div class="t-hero">
+  <img src="icon.png" alt="Desktop Calendar icon">
+  <h1>📱 We're looking for phone app testers</h1>
+  <p>We are bringing <b>Desktop Calendar</b> to Android phones.<br>
+  To publish it on Google Play, <b>12 testers need to keep the app installed for 14 days</b>.<br>
+  The three steps below take about five minutes. Thank you for your help!</p>
+</div>
+
+<div class="t-box">
+  <b>You need</b>: an Android phone and the <b>Google (Gmail) account signed in to the Play Store on that phone</b><br>
+  <b>What to do</b>: install the app and <b>keep it for 14 days</b> (opening it now and then helps even more)<br>
+  <b>Cost &amp; ads</b>: free, no ads · your events are stored only in your own Google account<br>
+  <span class="tnote">※ On iPhone, open <a href="https://calendar.eyefun.org/web">calendar.eyefun.org/web</a> in Safari and choose 'Add to Home Screen' instead (iPhones don't count toward this test).</span>
+</div>
+
+<p class="tnote" style="text-align:center">These buttons work best <b>on your phone</b>.</p>
+
+<div class="step" id="st1"><div class="n">1</div><div>
+  <h2>Join the tester group (Google Group)</h2>
+  <a class="go" data-s="1" href="https://groups.google.com/g/desktop-calendar-testers">Open the tester group</a>
+  <ol>
+    <li>Make sure you are signed in with the <b>same Gmail account as the Play Store</b> (profile picture at the top right).</li>
+    <li>Press <span class="en">Join group</span>.</li>
+    <li>If a settings window appears, press <span class="en">Join group</span> once more.</li>
+    <li>When you have joined, <b>close that window or press Back</b>. The Step 2 button will appear at the bottom of this page.</li>
+  </ol>
+  <p class="tnote">Joining the group is only what makes you eligible for the test. No emails are sent through this group, and only the developer can see the member list.</p>
+</div></div>
+
+<div class="step" id="st2"><div class="n">2</div><div>
+  <h2>Sign up for the test</h2>
+  <a class="go" data-s="2" href="https://play.google.com/apps/testing/org.eyefun.calendar">Open the test sign-up page</a>
+  <ol>
+    <li>Press the blue <span class="en">Become a tester</span> button.</li>
+    <li>When you see <span class="en">You are now a tester</span>, you're done.</li>
+    <li><b>Close that window or press Back</b>. The Step 3 button will appear at the bottom of this page.</li>
+  </ol>
+  <p class="tnote">Right after Step 1 the page may say it isn't ready yet. Please refresh after a minute or two.</p>
+</div></div>
+
+<div class="step" id="st3"><div class="n">3</div><div>
+  <h2>Install from the Play Store</h2>
+  <a class="go alt" data-s="3" id="playGo" href="https://play.google.com/store/apps/details?id=org.eyefun.calendar">Install from the Play Store</a>
+  <ol>
+    <li>When the Play Store opens <b>Desktop Calendar (iCalendar)</b>, press <span class="en">Install</span>.</li>
+    <li>Open the app and press <b>[Sign in with Google]</b>, then choose your usual Google account — your Google Calendar appears right away.</li>
+    <li><b>Please keep the app for 14 days.</b> You may remove it after that.</li>
+  </ol>
+  <p class="tnote">If it says the app can't be downloaded, wait about 10 minutes after Steps 1–2 and try again. If it still fails, clear the Play Store cache (Settings → Apps → Google Play Store → Storage → Clear cache) and retry.</p>
+</div></div>
+
+<section class="faq">
+  <h2>FAQ</h2>
+  <h3>Is my information shared with the developer?</h3>
+  <p>Under Google Play policy, testers' email addresses are visible to the developer. They are used only to run the test. Your events are never sent to the developer; they stay in your own Google account. See the <a href="privacy.html">privacy policy</a> for details.</p>
+  <h3>Will I see the same events as on my PC?</h3>
+  <p>Yes. Sign in with the same Google account and your PC and phone share the same Google Calendar. Changes on the phone appear on the PC right away.</p>
+  <h3>Where do I send feedback or bug reports?</h3>
+  <p>Use 'Send feedback to the tester' at the bottom of the app's Play Store page, or email <a href="mailto:sinmasuri@gmail.com">sinmasuri@gmail.com</a>.</p>
+  <h3>How do I leave the test?</h3>
+  <p>Press <span class="en">Leave the test</span> on the Step 2 page and remove the app. We'd be grateful if you could keep it for 14 days for the official release.</p>
+</section>
+
+<p class="tnote" style="text-align:center;margin:30px 0 40px">Desktop Calendar (iCalendar) · Developer Hyeong-su Kim · <a href="en.html">Homepage</a> · <a href="test.html">한국어</a></p>
+</main>
+<script>
+/* 안드로이드: Play 스토어 앱을 바로 연다(앱이 없으면 웹 페이지로) */
+(function(){var a=document.getElementById('playGo');if(!a)return;
+if(/Android/i.test(navigator.userAgent)){a.href='intent://details?id=org.eyefun.calendar#Intent;scheme=market;package=com.android.vending;S.browser_fallback_url='+encodeURIComponent('https://play.google.com/store/apps/details?id=org.eyefun.calendar')+';end';}})();
+</script>
+<div id="nextBar"><p id="nbMsg"></p><a class="go" id="nbGo" href="#"></a></div>
+<script>
+/* 단계 이어가기: 버튼을 누른 단계를 기억했다가, 이 페이지로 돌아오면 다음 단계를 바로 띄운다 */
+(function(){
+var K='dcalTestStep',bar=document.getElementById('nextBar'),msg=document.getElementById('nbMsg'),go=document.getElementById('nbGo');
+function get(){try{return +sessionStorage.getItem(K)||+localStorage.getItem(K)||0}catch(e){return 0}}
+function put(n){try{sessionStorage.setItem(K,n);localStorage.setItem(K,n)}catch(e){}}
+var links=[].slice.call(document.querySelectorAll('a.go[data-s]'));
+var pw=null,pt=null;
+function openStep(a,n,e){
+  put(n);
+  if(n===3 && /^intent:/.test(a.href)) return;            /* 3단계: Play 스토어 앱으로 바로(뒤로 가기로 돌아옴) */
+  if(e) e.preventDefault();
+  try{ pw=window.open(a.href,'dcalStep','popup=yes,width=480,height=760'); }catch(x){ pw=null; }
+  if(!pw){ location.href=a.href; return; }                 /* 팝업이 막히면 같은 화면에서 */
+  clearInterval(pt); pt=setInterval(function(){ if(!pw||pw.closed){ clearInterval(pt); pw=null; show(); } },700);
+}
+links.forEach(function(a){a.addEventListener('click',function(e){openStep(a,+a.dataset.s,e)})});
+function btn(n){return document.querySelector('a.go[data-s="'+n+'"]')}
+function show(){
+  var d=get();
+  for(var i=1;i<=3;i++){var el=document.getElementById('st'+i);el.classList.toggle('done',i<=d);el.classList.toggle('now',i===d+1)}
+  if(d<1||d>=3){bar.style.display='none';document.body.classList.remove('hasbar');
+    if(d>=3){msg.textContent='';}return}
+  var n=d+1,b=btn(n);
+  msg.textContent=(d===1?'Finished Step 1 (join the group)? Now for Step 2.':'Finished Step 2 (sign up)? Now the last step, Step 3.');
+  go.textContent='Step '+n+': '+b.textContent;go.href=b.href;go.className=b.className;go.onclick=function(e){openStep(b,n,e)};
+  bar.style.display='block';document.body.classList.add('hasbar');
+  var st=document.getElementById('st'+n);if(st)st.scrollIntoView({behavior:'smooth',block:'center'});
+}
+window.addEventListener('pageshow',show);
+document.addEventListener('visibilitychange',function(){if(!document.hidden)show()});
+show();
+})();
+</script>
+</body>
+</html>
