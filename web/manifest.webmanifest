@@ -35,5 +35,44 @@
       "type": "image/png",
       "purpose": "maskable"
     }
+  ],
+  "shortcuts": [
+    {
+      "name": "음성으로 일정 추가",
+      "short_name": "음성 입력",
+      "description": "말로 일정을 바로 추가",
+      "url": "./?a=voice",
+      "icons": [
+        {
+          "src": "sc-voice.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "새 일정",
+      "short_name": "새 일정",
+      "url": "./?a=new",
+      "icons": [
+        {
+          "src": "sc-new.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    },
+    {
+      "name": "주차 위치 입력",
+      "short_name": "주차 위치",
+      "url": "./?a=park",
+      "icons": [
+        {
+          "src": "sc-park.png",
+          "sizes": "192x192",
+          "type": "image/png"
+        }
+      ]
+    }
   ]
 }
