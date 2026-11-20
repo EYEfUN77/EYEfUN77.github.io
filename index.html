@@ -40,6 +40,7 @@
   <h2>새로 추가된 기능 <span style="font-size:.7rem;font-weight:800;color:#fff;background:#e53935;border-radius:999px;padding:2px 8px;vertical-align:middle">NEW</span></h2>
   <p style="color:var(--muted);margin-top:-4px">PC 앱과 휴대폰 앱 모두 자동으로 새 화면을 받아 바로 쓸 수 있습니다. (2026년 11월)</p>
   <div class="grid">
+    <div class="card"><h3>📑 계약 관리 <small style="color:var(--muted);font-weight:600">NEW</small></h3><p>자동차 할부·보험·렌탈·월세·전세 등 계약의 기간, 월 납입액, 납입일, 해지·갱신 조건을 기록하고 <b>계약서(PDF·사진·한글 파일)를 올려 둘 수 있습니다.</b> 달력에는 납입일에 💳, 만기일에 📄가 표시되고 만기 30일 전부터 알려 줍니다. 할부는 남은 회차와 잔액을 자동으로 계산하고, 이번 달 고정 납입액 합계도 한눈에 보입니다. 위쪽 [계약 관리] 버튼으로 엽니다.</p></div>
     <div class="card"><h3>🅿 차량 주차 위치 기록 <small style="color:var(--muted);font-weight:600">휴대폰</small></h3><p>[차량 주차 위치 입력]을 누르면 휴대폰 위치(GPS)로 "양산두산위브1차"처럼 아파트·건물 이름과 주소를 자동으로 찾고, "지하 3층 C-12"처럼 칸 번호를 적거나 🎤로 말해 저장합니다. 기둥 사진도 함께 남기고, 일정 목록 위 카드의 <b>[길찾기]</b>를 누르면 지금 있는 곳에서 차까지 네이버 지도 걷기 길찾기가 열립니다.</p></div>
     <div class="card"><h3>🎤 말로 빠르게 입력 <small style="color:var(--muted);font-weight:600">휴대폰</small></h3><p>빠른 입력 칸 옆 🎤를 누르고 "내일 오후 세 시 교수회의 도생관에서"라고 말하면 날짜·시간·장소가 채워진 일정 창이 열립니다. 중간에 잠깐 쉬어도 계속 듣습니다.</p></div>
     <div class="card"><h3>🎓 수업 시간표 한 번에 넣기</h3><p>과목·요일·시간·강의실을 적으면 학기 동안 매주 반복 일정으로 한꺼번에 넣고, <b>공휴일은 자동으로 뺍니다.</b> [주차 표시]에 등록한 학기 기간을 그대로 불러옵니다.</p></div>
@@ -86,8 +87,8 @@
     <tr><td>이메일 주소 (<code>openid</code>, <code>email</code>)</td><td>로그인한 계정을 화면에 표시하고 구분합니다.</td></tr>
     <tr><td>구글 캘린더 (<code>…/auth/calendar</code>)</td><td>캘린더 목록과 일정을 달력에 표시하고, 사용자가 요청할 때 일정 추가·수정·삭제, 반복 일정 변경, 공유 캘린더 만들기와 멤버 초대를 합니다.</td></tr>
     <tr><td>구글 할 일 (<code>…/auth/tasks</code>)</td><td>할 일 목록을 달력에 표시하고, 사용자가 요청할 때 할 일을 추가·완료·삭제합니다.</td></tr>
-    <tr><td>구글 드라이브 – 앱이 만든 파일만 (<code>…/auth/drive.file</code>)</td><td>사용자가 일정에 첨부한 사진·문서를 사용자의 드라이브 "바탕화면 달력 첨부사진"·"바탕화면 달력 첨부파일" 폴더에 저장하고 보여 주며, 휴대폰과 설정을 맞추는 "바탕화면 달력 설정.json" 파일을 만듭니다. 앱이 만들지 않은 드라이브 파일에는 접근하지 않습니다.</td></tr>
-    <tr><td>구글 드라이브 – 앱 설정 공간 (<code>…/auth/drive.appdata</code>)</td><td>분류·색, 주차 표시 기간, 스티커, 주차 위치 기록 등 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
+    <tr><td>구글 드라이브 – 앱이 만든 파일만 (<code>…/auth/drive.file</code>)</td><td>사용자가 일정·계약에 첨부한 사진·문서(계약서 포함)를 사용자의 드라이브 "바탕화면 달력 첨부사진"·"바탕화면 달력 첨부파일" 폴더에 저장하고 보여 주며, 휴대폰과 설정을 맞추는 "바탕화면 달력 설정.json" 파일을 만듭니다. 앱이 만들지 않은 드라이브 파일에는 접근하지 않습니다.</td></tr>
+    <tr><td>구글 드라이브 – 앱 설정 공간 (<code>…/auth/drive.appdata</code>)</td><td>분류·색, 주차 표시 기간, 스티커, 주차 위치 기록, 계약 기록 등 앱 설정을 사용자 드라이브의 숨겨진 앱 전용 공간에 저장해 다른 PC에서도 같은 설정을 쓰게 합니다.</td></tr>
   </table>
   <div class="note">바탕화면 달력이 구글 API에서 받은 정보를 사용하고 다른 앱으로 전송하는 방식은 <a href="https://developers.google.com/terms/api-services-user-data-policy" target="_blank" rel="noopener">Google API 서비스 사용자 데이터 정책</a>의 제한적 사용(Limited Use) 요구 사항을 따릅니다.</div>
   <p>자세한 내용은 <a href="privacy.html">개인정보처리방침</a>을 확인하세요.</p>
